@@ -1,5 +1,8 @@
 .idea
 
+# Avoid to version mmkp output files
+mmkp*.out
+
 # CMake
 cmake-build-*/
 
