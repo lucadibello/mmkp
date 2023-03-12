@@ -12,6 +12,11 @@ out/
 # Output file
 *.out
 
+# AMPL sover temporary files
+AMPLsolver/*.dat
+AMPLsolver/*.mod
+
+
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
