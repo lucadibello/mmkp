@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.21)
 project(mmkp)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 include_directories(.)
 
 add_executable(mmkp
-        data.cpp
-        data.h
-        main.cpp)
+        src/data.cpp
+        src/data.h
+        src/main.cpp src/utility/EasyInstance.cpp src/utility/EasyInstance.h)
