@@ -8,7 +8,10 @@
 #include <cstdlib>
 #include <cstdio>
 #include <csignal>
+#include <thread>
 
+static Data instance;
+static std::string output;
 
 char* getOption(int argc, char* argv[], const char* option)
 {
@@ -22,9 +25,28 @@ inline bool exists (const std::string& name) {
     return ( access( name.c_str(), F_OK ) != -1 );
 }
 
+void writeSolution() {
+    printf("\nSolution:\n");
+    int total_value = 0;
+    for (auto i = 0; i < instance.nclasses; i++){
+        const int itemValue = instance.values[i][instance.solution[i]];
+        printf("Class n: %d has item n: %d with value: %d\n", i, instance.solution[i], itemValue);
+        total_value += itemValue;
+    }
+    printf("Total value: %d\n", total_value);
+
+    std::ofstream outfile;
+    outfile.open(output, std::ios_base::out);
+    for (auto i = 0; i < instance.nclasses; i++){
+        outfile << instance.solution[i] << " ";
+    }
+    outfile.close();
+}
+
 void signalHandler( int signum ) {
    std::cout << "Running finalizing code. Interrupt signal (" << signum << ") received.\n";
 
+   writeSolution();
 
    exit(signum);  
 }
@@ -45,11 +67,10 @@ int main(int argc, char *argv[]) {
     int inttimelimit = atoi(timelimit);
     std::cout << "Instance name:" << input << "\n" ;
     std::cout << "Time limit:" << inttimelimit << "\n" ;
-    std::string output(input);
+    output = input;
     output.append(".out");
     std::cout << "Output name:" << output << "\n";
 
-    Data instance;
     instance.read_input(input);
 
     // Print information related to dataset
@@ -124,19 +145,8 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    printf("\nSolution:\n");
-    int total_value = 0;
-    for (auto i = 0; i < instance.nclasses; i++){
-        const int itemValue = instance.values[i][instance.solution[i]];
-        printf("Class n: %d has item n: %d with value: %d\n", i, instance.solution[i], itemValue);
-        total_value += itemValue;
-    }
-    printf("Total value: %d\n", total_value);
+    // Enable the following line to add some busy time and check the handling of the SIGINT
+    //std::this_thread::sleep_for(std::chrono::seconds(61));
 
-    std::ofstream outfile;
-    outfile.open(output, std::ios_base::out);
-    for (auto i = 0; i < instance.nclasses; i++){
-            outfile << instance.solution[i] << " ";
-    }
-    outfile.close();
+    writeSolution();
 }
