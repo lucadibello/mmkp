@@ -1,7 +1,6 @@
 #include "data.h"
 #include <iostream>
 #include <fstream>
-#include <string>
 #include <algorithm>
 #include <sstream>
 
@@ -9,7 +8,7 @@
 
 using namespace std;
 
-int data::read_input(const string& instance) {
+int Data::read_input(const string& instance) {
     cout << "Read instance: " << instance << " ";
 
     fstream newfile;
@@ -74,7 +73,7 @@ int data::read_input(const string& instance) {
     return 0;
 }
 
-int data::read_output(const string& instance) {
+int Data::read_output(const string& instance) {
     cout << "Read solution: " << instance << " ";
 
     fstream newfile;
@@ -108,7 +107,7 @@ int data::read_output(const string& instance) {
     return 0;
 }
 
-int data::read_time(const string& instance) {
+int Data::read_time(const string& instance) {
     fstream newfile;
     newfile.open(instance, ios::in);
     if (newfile.is_open()) {
@@ -119,7 +118,7 @@ int data::read_time(const string& instance) {
     return 0;
 }
 
-int data::verify_solution(double *val) {
+int Data::verify_solution(double *val) {
     cout << "Verify solution: ";
     double tmpval = 0.0;
     vector<int> consumption(nresources, 0);

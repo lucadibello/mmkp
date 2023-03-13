@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-class data
+class Data
 {
 public:
 
