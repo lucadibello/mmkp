@@ -21,4 +21,4 @@ if [ ! -d "cmake-build-debug" ]; then
 fi
 
 # Then, run the executable
-timeout -s 2 60s ./cmake-build-debug/mmkp -i "$1" -t 60
+time timeout -s 2 60s ./cmake-build-debug/mmkp -i "$1" -t 60
