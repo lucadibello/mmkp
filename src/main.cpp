@@ -8,7 +8,6 @@
 #include <cstdlib>
 #include <cstdio>
 #include <csignal>
-#include <thread>
 
 static Data instance;
 static std::string output;
