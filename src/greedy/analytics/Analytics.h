@@ -10,7 +10,7 @@
 
 class Analytics {
 public:
-    static AnalyticsReport& run(const Data& instance);
+    static AnalyticsReport run(const Data * instance);
 };
 
 
