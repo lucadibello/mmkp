@@ -1,10 +1,11 @@
 #include <iostream>
 #include <fstream>
 #include <unistd.h>
-#include <string>
 #include <cstring>
 #include "data.h"
 #include "src/utility/EasyInstance.h"
+#include "src/greedy/analytics/AnalyticsReport.h"
+#include "src/greedy/analytics/Analytics.h"
 #include <cstdlib>
 #include <cstdio>
 #include <csignal>
@@ -72,20 +73,10 @@ int main(int argc, char *argv[]) {
 
     instance.read_input(input);
 
-    // Print information related to dataset
-    printf("\nTotal classes: %d, Total items: %d\n", instance.nclasses, instance.nresources);
-    for (auto i = 0; i < instance.nresources; i++){
-        printf("Class n: %d has capacity of %d\n", i, instance.capacities[i]);
-
-        // Print the items of the class (value + weights)
-        for (auto j = 0; j < instance.nitems[i]; j++){
-            printf("Item n: %d has value of %d and weights of ", j, instance.values[i][j]);
-            for (auto k = 0; k < instance.nresources; k++){
-                printf("%d ", instance.weights[i][j * instance.nresources + k]);
-            }
-            printf("\n");
-        }
-    }
+    // Compute analysis of the dataset
+    AnalyticsReport report = Analytics::run(&instance);
+    // NOTICE: To print the report --> report.print();
+    report.print();
 
     /* ******************** */
     /*    Greedy Solution   */
@@ -111,7 +102,6 @@ int main(int argc, char *argv[]) {
                     // save values of the current best item in two variables to avoid multiple array accesses in the following if statements
                     const int bestItemValue = instance.values[i][instance.solution[i]];
                     const int currentItemValue = instance.values[i][j];
-
 
                     // If the chosen item fits the capacity of the multi-dimensional knapsack, check if it is better than the current best item
                     // An item is better of the current best item if:
@@ -144,8 +134,6 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    // Enable the following line to add some busy time and check the handling of the SIGINT
-    //std::this_thread::sleep_for(std::chrono::seconds(61));
-
+    // Write solution to file
     writeSolution();
 }
