@@ -8,27 +8,35 @@
 #include <vector>
 
 class AnalyticsReport {
-private:
-    // Analytics of the whole problem
-    float m_meanValue_global;
-    float m_meanWeight_global;
-
-    // Analytics of each class
-    std::vector<float> m_meanValue_class;
-    std::vector<float> m_meanWeight_class;
-
-    // Analytics of each item
-    std::vector<float> m_valueAvgWeightRatio_item;
-
 public:
-    AnalyticsReport();
+    AnalyticsReport(int nClasses, std::vector<int> nItemsPerClass);
     ~AnalyticsReport();
 
-    void setMeanValueGlobal(float meanValue);
-    void setMeanWeightGlobal(float meanWeight);
+    void setMeanValueGlobal(double meanValue);
+    void setMeanWeightGlobal(double meanWeight);
     void setMeanValueClass(int classIndex, float meanValue);
     void setMeanWeightClass(int classIndex, float meanWeight);
     void setValueAvgWeightRatioItem(int classIndex, int itemIndex, float ratioValue);
+    void print() const;
+
+    void setMeanRatioGlobal(double d);
+
+private:
+    int m_nClasses;
+    std::vector<int> m_nItems;
+
+    // Analytics of the whole problem
+    double m_meanValue_global;
+    double m_meanWeight_global;
+    double m_meanRatio_global;
+
+    // Analytics of each class
+    std::vector<float> m_meanWeight_class;
+    std::vector<float> m_meanValue_class;
+
+    // Analytics of each item
+    // Notice: Position of the item in the vector: classIndex * nItemsPerClass + itemIndex
+    std::vector<float> m_valueAvgWeightRatio_item;
 };
 
 
