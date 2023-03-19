@@ -8,4 +8,9 @@ include_directories(.)
 add_executable(mmkp
         src/data.cpp
         src/data.h
-        src/main.cpp src/utility/EasyInstance.cpp src/utility/EasyInstance.h)
+        src/main.cpp src/utility/EasyInstance.cpp src/utility/EasyInstance.h )
+
+add_executable(converter
+        src/data.cpp
+        src/data.h
+        src/converter/DataConverter.cpp)
