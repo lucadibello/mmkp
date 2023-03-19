@@ -28,8 +28,6 @@ AnalyticsReport Analytics::run(const Data * instance) {
         int classMeanValue = 0;
         float classMeanWeight = 0;
         for (auto j = 0; j < nItemsPerClass; j++) {
-            if(j == 24)
-                std::cout << "24" << std::endl;
             const int itemValue = instance->values[i][j];
             //std::vector<int> itemWeights = instance->weights[i];
             const float weightMean = FastMath::fastMean(j * instance-> nresources, instance->nresources, &instance->weights[i]);
