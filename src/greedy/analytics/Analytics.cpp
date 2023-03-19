@@ -5,11 +5,13 @@
 #include "Analytics.h"
 #include "src/utility/FastMath.h"
 
+#include <iostream>
+
 AnalyticsReport Analytics::run(const Data * instance) {
     // Compute the average value and weight of the whole problem + each class + each item and save them into an AnalyticsReport object
     AnalyticsReport report{
         instance->nclasses,
-        instance->nitems
+        &instance->nitems
     };
 
     // Build report incrementally (compute all required values in the same loop to speed up the process, we want a super fast solution)
@@ -26,9 +28,11 @@ AnalyticsReport Analytics::run(const Data * instance) {
         int classMeanValue = 0;
         float classMeanWeight = 0;
         for (auto j = 0; j < nItemsPerClass; j++) {
+            if(j == 24)
+                std::cout << "24" << std::endl;
             const int itemValue = instance->values[i][j];
-            std::vector<int> itemWeights = instance->weights[i];
-            const float weightMean = FastMath::fastMean(j * instance-> nresources, nItemsPerClass, itemWeights);
+            //std::vector<int> itemWeights = instance->weights[i];
+            const float weightMean = FastMath::fastMean(j * instance-> nresources, instance->nresources, &instance->weights[i]);
 
             // Update counters
             classMeanValue += itemValue;

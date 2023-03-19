@@ -5,8 +5,9 @@
 #ifndef MMKP_ANALYTICS_H
 #define MMKP_ANALYTICS_H
 
-#import "./AnalyticsReport.h"
+#include "./AnalyticsReport.h"
 #include "src/data.h"
+
 
 class Analytics {
 public:

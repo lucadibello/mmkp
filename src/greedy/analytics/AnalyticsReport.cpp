@@ -10,11 +10,15 @@
 /**
  * Constructor method.
  */
-AnalyticsReport::AnalyticsReport(int nClasses, std::vector<int> nItemsPerClass): m_nClasses{nClasses}, m_nItems{std::move(nItemsPerClass)}, m_meanValue_global(0), m_meanWeight_global(0) {
+AnalyticsReport::AnalyticsReport(int nClasses, const std::vector<int> *nItemsPerClass): m_nClasses{nClasses}, m_nItems{nItemsPerClass}, m_meanValue_global(0), m_meanWeight_global(0) {
     // Initialize vectors size to avoid memory allocation during the execution (speed up the process)
     m_meanValue_class.resize(nClasses);
     m_meanWeight_class.resize(nClasses);
-    m_valueAvgWeightRatio_item.resize(nClasses);
+    int nItems = 0;
+    for(int i = 0; i < nItemsPerClass->size(); i ++)
+        nItems += nItemsPerClass->at(i);
+    m_valueAvgWeightRatio_item.resize(nItems);
+    //m_valueAvgWeightRatio_item[i * m_nItems[i] + j]
 }
 
 
@@ -77,7 +81,7 @@ void AnalyticsReport::setMeanWeightClass(int classIndex, float meanWeight) {
  * @param ratioValue Value/average weight ratio of the item.
  */
 void AnalyticsReport::setValueAvgWeightRatioItem(int classIndex, int itemIndex, float ratioValue) {
-    m_valueAvgWeightRatio_item[classIndex * m_nItems.at(classIndex) + itemIndex] = ratioValue;
+    m_valueAvgWeightRatio_item[classIndex * m_nItems->at(classIndex) + itemIndex] = ratioValue;
 }
 
 void AnalyticsReport::print() const {
@@ -90,9 +94,9 @@ void AnalyticsReport::print() const {
         std::cout << "- Class " << i << std::endl;
         std::cout << "\t- Mean value of the class: " << m_meanValue_class[i] << std::endl;
         std::cout << "\t- Mean weight of the class: " << m_meanWeight_class[i] << std::endl;
-        for (auto j = 0; j < m_nItems[i]; j++) {
+        for (auto j = 0; j < m_nItems->at(i); j++) {
             std::cout << "\t- Item " << j << std::endl;
-            std::cout << "\t\t- Value/average weight ratio: " << m_valueAvgWeightRatio_item[i * m_nItems[i] + j] << std::endl;
+            std::cout << "\t\t- Value/average weight ratio: " << m_valueAvgWeightRatio_item[i * m_nItems->at(i) + j] << std::endl;
         }
     }
 }

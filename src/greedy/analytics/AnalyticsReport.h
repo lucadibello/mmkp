@@ -9,7 +9,7 @@
 
 class AnalyticsReport {
 public:
-    AnalyticsReport(int nClasses, std::vector<int> nItemsPerClass);
+    AnalyticsReport(int nClasses, const std::vector<int> *nItemsPerClass);
     ~AnalyticsReport();
 
     void setMeanValueGlobal(double meanValue);
@@ -23,7 +23,7 @@ public:
 
 private:
     int m_nClasses;
-    std::vector<int> m_nItems;
+    const std::vector<int> *m_nItems;
 
     // Analytics of the whole problem
     double m_meanValue_global;

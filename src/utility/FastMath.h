@@ -9,7 +9,7 @@
 
 class FastMath {
 public:
-    static float fastMean(int startPosition, unsigned int nItems, std::vector<int> &values);
+    static float fastMean(int startPosition, unsigned int nItems, const std::vector<int> *values);
 };
 
 
