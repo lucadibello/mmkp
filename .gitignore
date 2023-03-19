@@ -2,6 +2,7 @@
 
 # Avoid to version mmkp output files
 mmkp*.out
+mmkp*.dat
 
 # CMake
 cmake-build-*/
