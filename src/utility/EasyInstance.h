@@ -10,8 +10,8 @@
 
 class EasyInstance {
 public:
-    static void pickSolution(Data & instance, int classIndex, int itemIndex);
-    static bool doesItemFit(Data & instance, int classIndex, int itemIndex);
+    static void pickSolution(Data * instance, int classIndex, int itemIndex);
+    static bool doesItemFit(Data * instance, int classIndex, int itemIndex);
 };
 
 

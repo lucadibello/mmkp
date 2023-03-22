@@ -1,0 +1,57 @@
+// Cycle through all classes
+for (auto i = 0; i < instance->nclasses; i++)
+{
+    // Cycle through all items of the class
+    for (auto j = 0; j < instance->nitems[i]; j++)
+    {
+        // If any item of the class has not been chosen yet, choose the first item
+        if (instance->solution[i] == 0)
+        {
+            // Save the solution in the array of solutions
+            EasyInstance::pickSolution(instance, i, j);
+        }
+        else
+        {
+            // Check if the current item j fits the capacity of the multi-dimensional knapsack
+            if (EasyInstance::doesItemFit(instance, i, j))
+            {
+
+                // save values of the current best item in two variables to avoid multiple array accesses in the following if statements
+                const int bestItemValue = instance->values[i][instance->solution[i]];
+                const int currentItemValue = instance->values[i][j];
+
+                // If the chosen item fits the capacity of the multi-dimensional knapsack, check if it is better than the current best item
+                // An item is better of the current best item if:
+                //      1. It has a higher value than the current best item (higher value = better)
+                //      2. It has the same value as the current best item, but a lower average weight (lower average weight = better)
+
+                // Case 1: Check if item j has an higher value that the current best item
+                if (currentItemValue > bestItemValue)
+                {
+                    EasyInstance::pickSolution(instance, i, j);
+                }
+                else if (currentItemValue == bestItemValue)
+                {
+                    // Case 2: Check if item j has the same value as the current best item, but a lower average weight
+                    double avg_weight_j = 0;
+                    double avg_weight_solution = 0;
+
+                    // Compute average weight of item j and the current solution item
+                    for (auto k = 0; k < instance->nresources; k++)
+                    {
+                        avg_weight_j += instance->weights[i][j * instance->nresources + k];
+                        avg_weight_solution += instance->weights[i][instance->solution[i] * instance->nresources + k];
+                    }
+                    avg_weight_j /= instance->nresources;
+                    avg_weight_solution /= instance->nresources;
+
+                    // Check if item j has a lower average weight than the current best item
+                    if (avg_weight_j < avg_weight_solution)
+                    {
+                        EasyInstance::pickSolution(instance, i, j);
+                    }
+                }
+            }
+        }
+    }
+}

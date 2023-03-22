@@ -8,7 +8,7 @@ include_directories(.)
 add_executable(mmkp
         src/data.cpp
         src/data.h
-        src/main.cpp src/utility/EasyInstance.cpp src/utility/EasyInstance.h src/greedy/analytics/Analytics.cpp src/greedy/analytics/Analytics.h src/greedy/analytics/AnalyticsReport.cpp src/greedy/analytics/AnalyticsReport.h src/utility/FastMath.cpp src/utility/FastMath.h)
+        src/main.cpp src/utility/EasyInstance.cpp src/utility/EasyInstance.h src/greedy/analytics/Analytics.cpp src/greedy/analytics/Analytics.h src/greedy/analytics/AnalyticsReport.cpp src/greedy/analytics/AnalyticsReport.h src/utility/FastMath.cpp src/utility/FastMath.h src/greedy/model/KnapClass.cpp src/greedy/model/KnapClass.h src/greedy/Greedy.cpp src/greedy/Greedy.h)
 
 add_executable(converter
         src/data.cpp
