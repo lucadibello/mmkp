@@ -29,6 +29,7 @@ AnalyticsReport Analytics::run(const Data * instance) {
         float classMeanWeight = 0;
         for (auto j = 0; j < nItemsPerClass; j++) {
             const int itemValue = instance->values[i][j];
+
             //std::vector<int> itemWeights = instance->weights[i];
             const float weightMean = FastMath::fastMean(j * instance-> nresources, instance->nresources, &instance->weights[i]);
 
@@ -59,7 +60,6 @@ AnalyticsReport Analytics::run(const Data * instance) {
     // Update the average value and weight of the whole problem
     report.setMeanValueGlobal(totalValue / static_cast<double>(totalItems));
     report.setMeanWeightGlobal(totalWeight / static_cast<double>(totalItems));
-    report.setMeanRatioGlobal(totalValue / totalWeight);
 
     // Return the report
     return report;

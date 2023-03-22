@@ -17,10 +17,11 @@ public:
     void setMeanValueClass(int classIndex, float meanValue);
     void setMeanWeightClass(int classIndex, float meanWeight);
     void setValueAvgWeightRatioItem(int classIndex, int itemIndex, float ratioValue);
+    float getValueAvgWeightRatioItem(int classIndex, int itemIndex) const;
     void print() const;
 
-    void setMeanRatioGlobal(double d);
-
+    float getMeanValueClass(int classIndex) const;
+    float getMeanWeightClass(int classIndex) const;
 private:
     int m_nClasses;
     const std::vector<int> *m_nItems;
@@ -28,7 +29,6 @@ private:
     // Analytics of the whole problem
     double m_meanValue_global;
     double m_meanWeight_global;
-    double m_meanRatio_global;
 
     // Analytics of each class
     std::vector<float> m_meanWeight_class;

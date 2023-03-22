@@ -18,6 +18,7 @@ AnalyticsReport::AnalyticsReport(int nClasses, const std::vector<int> *nItemsPer
     for(int i = 0; i < nItemsPerClass->size(); i ++)
         nItems += nItemsPerClass->at(i);
     m_valueAvgWeightRatio_item.resize(nItems);
+
     //m_valueAvgWeightRatio_item[i * m_nItems[i] + j]
 }
 
@@ -30,14 +31,6 @@ AnalyticsReport::~AnalyticsReport() {
     m_meanValue_class.clear();
     m_meanWeight_class.clear();
     m_valueAvgWeightRatio_item.clear();
-}
-
-/**
- * Set the mean ratio of the whole problem, taking into account the value/weight ratio of all the items of all the classes.
- * @param meanRatio Mean ratio of the whole problem.
- */
-void AnalyticsReport::setMeanRatioGlobal(double meanRatio) {
-    m_meanRatio_global = meanRatio;
 }
 
 /**
@@ -99,4 +92,16 @@ void AnalyticsReport::print() const {
             std::cout << "\t\t- Value/average weight ratio: " << m_valueAvgWeightRatio_item[i * m_nItems->at(i) + j] << std::endl;
         }
     }
+}
+
+float AnalyticsReport::getMeanValueClass(int classIndex) const {
+    return m_meanValue_class[classIndex];
+}
+
+float AnalyticsReport::getMeanWeightClass(int classIndex) const {
+    return m_meanWeight_class[classIndex];
+}
+
+float AnalyticsReport::getValueAvgWeightRatioItem(int classIndex, int itemIndex) const {
+    return m_valueAvgWeightRatio_item[classIndex * m_nItems->at(classIndex) + itemIndex];
 }

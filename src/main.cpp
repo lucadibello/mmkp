@@ -29,15 +29,13 @@ inline bool exists(const std::string &name)
 
 void writeSolution()
 {
-    printf("\nSolution:\n");
     int total_value = 0;
     for (auto i = 0; i < instance.nclasses; i++)
     {
         const int itemValue = instance.values[i][instance.solution[i]];
-        printf("Class n: %d has item n: %d with value: %d\n", i, instance.solution[i], itemValue);
         total_value += itemValue;
     }
-    printf("Total value: %d\n", total_value);
+    std::cout << "Total value: " << total_value << std::endl;
 
     std::ofstream outfile;
     outfile.open(output, std::ios_base::out);
