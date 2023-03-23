@@ -7,6 +7,7 @@
 #include "src/greedy/analytics/Analytics.h"
 #include "src/utility/EasyInstance.h"
 #include <iostream>
+#include <algorithm>
 
 void sortClassesByRatioStd(std::vector<int> &classes, const AnalyticsReport &report) {
     // Class at index i has ratio: report.getMeanValueClass
