@@ -11,7 +11,7 @@ AnalyticsReport Analytics::run(const Data * instance) {
     // Compute the average value and weight of the whole problem + each class + each item and save them into an AnalyticsReport object
     AnalyticsReport report{
         instance->nclasses,
-        &instance->nitems
+        &instance->nitems,
     };
 
     // Build report incrementally (compute all required values in the same loop to speed up the process, we want a super fast solution)
@@ -32,6 +32,13 @@ AnalyticsReport Analytics::run(const Data * instance) {
 
             //std::vector<int> itemWeights = instance->weights[i];
             const float weightMean = FastMath::fastMean(j * instance-> nresources, instance->nresources, &instance->weights[i]);
+            const float weightStdDev = FastMath::fastStdDev(j * instance->nresources, instance->nresources, &instance->weights[i]);
+
+            // calculate p value
+            double pValue = 0;
+            for (auto k = 0; k < instance->nresources; k++) {
+                pValue += (instance->weights[i][j * instance->nresources + k] / (double)instance->capacities[k]);
+            }
 
             // Update counters
             classMeanValue += itemValue;
@@ -42,6 +49,9 @@ AnalyticsReport Analytics::run(const Data * instance) {
 
             // Update the average value/weight ratio of the item
             report.setValueAvgWeightRatioItem(i, j, ratioValue);
+            report.setValueStdDevWeightItem(i, j, weightStdDev);
+            report.setValueAvgWeightItem(i, j, weightMean);
+            report.setValuePItem(i, j, pValue);
         }
 
         // Update the average value and weight of the class

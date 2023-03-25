@@ -18,6 +18,13 @@ public:
     void setMeanWeightClass(int classIndex, float meanWeight);
     void setValueAvgWeightRatioItem(int classIndex, int itemIndex, float ratioValue);
     float getValueAvgWeightRatioItem(int classIndex, int itemIndex) const;
+    void setValueAvgWeightItem(int classIndex, int itemIndex, float avgWeightValue);
+    float getValueAvgWeightItem(int classIndex, int itemIndex) const;
+    void setValueStdDevWeightItem(int classIndex, int itemIndex, float stdDevValue);
+    float getValueStdDevWeightItem(int classIndex, int itemIndex) const;
+    void setValuePItem(int classIndex, int itemIndex, double pValue);
+    double getValuePItem(int classIndex, int itemIndex) const;
+
     void print() const;
 
     float getMeanValueClass(int classIndex) const;
@@ -37,6 +44,10 @@ private:
     // Analytics of each item
     // Notice: Position of the item in the vector: classIndex * nItemsPerClass + itemIndex
     std::vector<float> m_valueAvgWeightRatio_item;
+    std::vector<float> m_stdDevValue_item;
+    std::vector<float> m_valueAvgWeight_item;
+    // p value is the sum of the percentage for each weight class divided by the max capacity of the knapsack. (w1/Q1 + w2/Q2 + ... + wn/Qn)
+    std::vector<double> m_pValue_item;
 };
 
 

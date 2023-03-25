@@ -10,7 +10,7 @@
 #include <algorithm>
 
 void sortClassesByRatioStd(std::vector<int> &classes, const AnalyticsReport &report) {
-    // Class at index i has ratio: report.getMeanValueClass
+    // Class at index i has ratio: report.getMeanValueClass / report.getMeanWeightClass
     std::sort(classes.begin(), classes.end(), [&report](int i, int j) {
         double ratio_i = report.getMeanValueClass(i) / report.getMeanWeightClass(i);
         double ratio_j = report.getMeanValueClass(j) / report.getMeanWeightClass(j);
@@ -19,10 +19,14 @@ void sortClassesByRatioStd(std::vector<int> &classes, const AnalyticsReport &rep
 }
 
 void sortItemsByRatioStd(std::vector<int> &items, const AnalyticsReport &report, int classIndex) {
-    // Item at index i has ratio: report.getValueAvgWeightRatioItem
+    // Item at index i has ratio: (report.getValueAvgWeightItem(classIndex, i) + report.getValueStdDevWeightItem(classIndex, j)) / report.getValuePItem(classIndex, i)
     std::sort(items.begin(), items.end(), [&report, classIndex](int i, int j) {
-        double ratio_i = report.getValueAvgWeightRatioItem(classIndex, i);
-        double ratio_j = report.getValueAvgWeightRatioItem(classIndex, j);
+        double ratio_i =
+                (report.getValueAvgWeightItem(classIndex, i) + report.getValueStdDevWeightItem(classIndex, j)) /
+                report.getValuePItem(classIndex, i);
+        double ratio_j =
+                (report.getValueAvgWeightItem(classIndex, j) + report.getValueStdDevWeightItem(classIndex, j)) /
+                report.getValuePItem(classIndex, j);
         return ratio_i > ratio_j;
     });
 }
@@ -37,7 +41,7 @@ void sortAll(std::vector<int> &classes, std::vector<std::vector<int>> &items, co
 
 void printCapacities(Data *instance) {
     std::cout << "Capacities: ";
-    for (auto k = 0; k < instance->nresources; k++){
+    for (auto k = 0; k < instance->nresources; k++) {
         std::cout << instance->capacities[k] << " ";
     }
     std::cout << std::endl;
@@ -69,9 +73,11 @@ void Greedy::compute(Data *instance) {
 
     // Print all items for each class and print their most valuable / least valuable ratio
     for (int i = 0; i < sortedClasses.size(); i++) {
-        std::cout << "Sorted items for class " << sortedClasses[i] << " (average: " << report.getMeanValueClass(sortedClasses[i]) / report.getMeanWeightClass(sortedClasses[i]) << "): ";
+        std::cout << "Sorted items for class " << sortedClasses[i] << " (average: "
+                  << report.getMeanValueClass(sortedClasses[i]) / report.getMeanWeightClass(sortedClasses[i]) << "): ";
         for (int j = 0; j < sortedItems[i].size(); j++) {
-            std::cout << "(" << sortedItems[i][j] << "," << report.getValueAvgWeightRatioItem(sortedClasses[i], sortedItems[i][j]) << ") ";
+            std::cout << "(" << sortedItems[i][j] << ","
+                      << report.getValueAvgWeightRatioItem(sortedClasses[i], sortedItems[i][j]) << ") ";
         }
         std::cout << std::endl;
     }
@@ -88,23 +94,37 @@ void Greedy::compute(Data *instance) {
     // Note: if item i is picked, then all items j with j > i are discarded
     for (int i = 0; i < sortedClasses.size(); i++) {
         int classIndex = sortedClasses[i];
-        for (int itemIndex : sortedItems[i]) {
+        bool itemTook = false;
+        for (int itemIndex: sortedItems[i]) {
             if (EasyInstance::doesItemFit(instance, classIndex, itemIndex)) {
                 // Pick right solution!
                 EasyInstance::pickSolution(instance, classIndex, itemIndex);
                 // Print capacities
+                itemTook = true;
                 printCapacities(instance);
                 break;
             } else {
-                std::cout << "Item " << itemIndex << " of class " << classIndex << " does not fit in the knapsack" << std::endl;
+                std::cout << "Item " << itemIndex << " of class " << classIndex << " does not fit in the knapsack"
+                          << std::endl;
             }
+        }
+        if (!itemTook) {
+            std::cout << "No item of class " << classIndex << " fits in the knapsack" << std::endl;
+            std::cout << "Done " << i << " classes out of " << sortedClasses.size() << std::endl;
+            exit(1);
         }
     }
     std::cout << "======= SOLUTION CALCULATED =======" << std::endl;
 
     // Print solution to stdout
-    std::cout << "Solution: ";
+    std::cout << "Solution: " << std::endl;
     for (int i = 0; i < instance->nclasses; i++) {
         std::cout << "Class #" << i << " -> Item #" << instance->solution[i] << std::endl;
     }
+
+    std::cout << "Remaining capacities: ";
+    for (auto k = 0; k < instance->nresources; k++) {
+        std::cout << instance->capacities[k] << " ";
+    }
+    std::cout << std::endl;
 }
