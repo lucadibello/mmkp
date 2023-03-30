@@ -18,12 +18,12 @@ public:
     void setMeanWeightClass(int classIndex, float meanWeight);
     void setValueAvgWeightRatioItem(int classIndex, int itemIndex, float ratioValue);
     float getValueAvgWeightRatioItem(int classIndex, int itemIndex) const;
-    void setValueAvgWeightItem(int classIndex, int itemIndex, float avgWeightValue);
-    float getValueAvgWeightItem(int classIndex, int itemIndex) const;
-    void setValueStdDevWeightItem(int classIndex, int itemIndex, float stdDevValue);
-    float getValueStdDevWeightItem(int classIndex, int itemIndex) const;
-    void setValuePItem(int classIndex, int itemIndex, double pValue);
-    double getValuePItem(int classIndex, int itemIndex) const;
+    void setAvgWeightItem(int classIndex, int itemIndex, float avgWeightValue);
+    float getAvgWeightItem(int classIndex, int itemIndex) const;
+    void setStdDevWeightItem(int classIndex, int itemIndex, float stdDevValue);
+    float getStdDevWeightItem(int classIndex, int itemIndex) const;
+    void setPItem(int classIndex, int itemIndex, double pValue);
+    double getPItem(int classIndex, int itemIndex) const;
 
     void print() const;
 

@@ -85,7 +85,7 @@ void AnalyticsReport::setValueAvgWeightRatioItem(int classIndex, int itemIndex, 
  * @param itemIndex Index of the item.
  * @return std dev weight ratio of the item.
  */
-void AnalyticsReport::setValueStdDevWeightItem(int classIndex, int itemIndex, float stdDevValue) {
+void AnalyticsReport::setStdDevWeightItem(int classIndex, int itemIndex, float stdDevValue) {
     m_stdDevValue_item[classIndex * m_nItems->at(classIndex) + itemIndex] = stdDevValue;
 }
 
@@ -95,7 +95,7 @@ void AnalyticsReport::setValueStdDevWeightItem(int classIndex, int itemIndex, fl
  * @param itemIndex Index of the item.
  * @return average weight ratio of the item.
  */
-void AnalyticsReport::setValueAvgWeightItem(int classIndex, int itemIndex, float avgWeightValue){
+void AnalyticsReport::setAvgWeightItem(int classIndex, int itemIndex, float avgWeightValue){
     m_valueAvgWeight_item[classIndex * m_nItems->at(classIndex) + itemIndex] = avgWeightValue;
 }
 
@@ -105,7 +105,7 @@ void AnalyticsReport::setValueAvgWeightItem(int classIndex, int itemIndex, float
  * @param itemIndex Index of the item.
  * @param pValue P value of the item.
  */
-void AnalyticsReport::setValuePItem(int classIndex, int itemIndex, double pValue) {
+void AnalyticsReport::setPItem(int classIndex, int itemIndex, double pValue) {
     m_pValue_item[classIndex * m_nItems->at(classIndex) + itemIndex] = pValue;
 }
 
@@ -142,15 +142,15 @@ float AnalyticsReport::getValueAvgWeightRatioItem(int classIndex, int itemIndex)
 }
 
 
-float AnalyticsReport::getValueAvgWeightItem(int classIndex, int itemIndex) const {
+float AnalyticsReport::getAvgWeightItem(int classIndex, int itemIndex) const {
     return m_valueAvgWeight_item[classIndex * m_nItems->at(classIndex) + itemIndex];
 }
 
 
-float AnalyticsReport::getValueStdDevWeightItem(int classIndex, int itemIndex) const {
+float AnalyticsReport::getStdDevWeightItem(int classIndex, int itemIndex) const {
     return m_stdDevValue_item[classIndex * m_nItems->at(classIndex) + itemIndex];
 }
 
-double AnalyticsReport::getValuePItem(int classIndex, int itemIndex) const {
+double AnalyticsReport::getPItem(int classIndex, int itemIndex) const {
     return m_pValue_item[classIndex * m_nItems->at(classIndex) + itemIndex];
 }

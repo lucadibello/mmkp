@@ -49,9 +49,9 @@ AnalyticsReport Analytics::run(const Data * instance) {
 
             // Update the average value/weight ratio of the item
             report.setValueAvgWeightRatioItem(i, j, ratioValue);
-            report.setValueStdDevWeightItem(i, j, weightStdDev);
-            report.setValueAvgWeightItem(i, j, weightMean);
-            report.setValuePItem(i, j, pValue);
+            report.setStdDevWeightItem(i, j, weightStdDev);
+            report.setAvgWeightItem(i, j, weightMean);
+            report.setPItem(i, j, pValue);
         }
 
         // Update the average value and weight of the class
