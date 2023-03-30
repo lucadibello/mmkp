@@ -9,6 +9,10 @@
 #include <iostream>
 #include <algorithm>
 
+static float ValueDividedByAvgWeightImportance = 1;
+static float StdDevDividedByAvgWeightImportance = 1;
+
+
 void sortClassesByRatioStd(std::vector<int> &classes, const AnalyticsReport &report) {
     // Class at index i has ratio: report.getMeanValueClass / report.getMeanWeightClass
     std::sort(classes.begin(), classes.end(), [&report](int i, int j) {
@@ -22,11 +26,11 @@ void sortItemsByRatioStd(std::vector<int> &items, const AnalyticsReport &report,
     // Item at index i has ratio: (report.getValueAvgWeightItem(classIndex, i) + report.getValueStdDevWeightItem(classIndex, j)) / report.getValuePItem(classIndex, i)
     std::sort(items.begin(), items.end(), [&report, classIndex](int i, int j) {
         double ratio_i =
-                (report.getValueAvgWeightItem(classIndex, i) + report.getValueStdDevWeightItem(classIndex, j)) /
-                report.getValuePItem(classIndex, i);
+                ((report.getAvgWeightItem(classIndex, i) + report.getStdDevWeightItem(classIndex, i)) / report.getPItem(classIndex, i));
+        std::cout << "classIndex: " << classIndex << " itemIndex: " << i << " ratio: " << ratio_i << std::endl;
         double ratio_j =
-                (report.getValueAvgWeightItem(classIndex, j) + report.getValueStdDevWeightItem(classIndex, j)) /
-                report.getValuePItem(classIndex, j);
+                ((report.getAvgWeightItem(classIndex, j) + report.getStdDevWeightItem(classIndex, j)) / report.getPItem(classIndex, j));
+        std::cout << "classIndex: " << classIndex << " itemIndex: " << j << " ratio: " << ratio_j << std::endl;
         return ratio_i > ratio_j;
     });
 }
