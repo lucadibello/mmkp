@@ -44,14 +44,9 @@ AnalyticsReport Analytics::run(const Data * instance) {
             classMeanValue += itemValue;
             classMeanWeight += weightMean;
 
-            // Compute the average value/weight ratio of the item
-            const float ratioValue = static_cast<float>(itemValue) / weightMean;
-
             // Update the average value/weight ratio of the item
-            report.setValueAvgWeightRatioItem(i, j, ratioValue);
             report.setStdDevWeightItem(i, j, weightStdDev);
             report.setAvgWeightItem(i, j, weightMean);
-            report.setPItem(i, j, pValue);
         }
 
         // Update the average value and weight of the class

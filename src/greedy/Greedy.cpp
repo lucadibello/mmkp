@@ -9,12 +9,11 @@
 #include <iostream>
 #include <algorithm>
 
-static float ValueDividedByAvgWeightImportance = 1;
-static float StdDevDividedByAvgWeightImportance = 1;
+static float valueDividedByAvgWeightImportance = 1;
+static float stdDevDividedByAvgWeightImportance = 1;
 
 
 void sortClassesByRatioStd(std::vector<int> &classes, const AnalyticsReport &report) {
-    // Class at index i has ratio: report.getMeanValueClass / report.getMeanWeightClass
     std::sort(classes.begin(), classes.end(), [&report](int i, int j) {
         double ratio_i = report.getMeanValueClass(i) / report.getMeanWeightClass(i);
         double ratio_j = report.getMeanValueClass(j) / report.getMeanWeightClass(j);
@@ -22,23 +21,37 @@ void sortClassesByRatioStd(std::vector<int> &classes, const AnalyticsReport &rep
     });
 }
 
-void sortItemsByRatioStd(std::vector<int> &items, const AnalyticsReport &report, int classIndex) {
-    // Item at index i has ratio: (report.getValueAvgWeightItem(classIndex, i) + report.getValueStdDevWeightItem(classIndex, j)) / report.getValuePItem(classIndex, i)
-    std::sort(items.begin(), items.end(), [&report, classIndex](int i, int j) {
-        double ratio_i =
-                ((report.getAvgWeightItem(classIndex, i) + report.getStdDevWeightItem(classIndex, i)) / report.getPItem(classIndex, i));
-        std::cout << "classIndex: " << classIndex << " itemIndex: " << i << " ratio: " << ratio_i << std::endl;
-        double ratio_j =
-                ((report.getAvgWeightItem(classIndex, j) + report.getStdDevWeightItem(classIndex, j)) / report.getPItem(classIndex, j));
-        std::cout << "classIndex: " << classIndex << " itemIndex: " << j << " ratio: " << ratio_j << std::endl;
+void sortItemsByRatioStd(std::vector<int> &items, const AnalyticsReport &report, int classIndex, const Data *instance) {
+    std::cout << "Sorting items..." << std::endl;
+    std::sort(items.begin(), items.end(), [&report, classIndex, &instance](int i, int j) {
+        double piValue_i = 0;
+        double piValue_j = 0;
+        for (auto k = 0; k < instance->nresources; k++) {
+            piValue_i += (instance->weights[classIndex][i * instance->nresources + k] /
+                          (double) instance->capacities[k]);
+            piValue_j += (instance->weights[classIndex][j * instance->nresources + k] /
+                          (double) instance->capacities[k]);
+        }
+        double ratio_i = (((float) instance->values[classIndex][i] / report.getAvgWeightItem(classIndex, i)) *
+                          valueDividedByAvgWeightImportance +
+                          ((float) instance->values[classIndex][i] / report.getStdDevWeightItem(classIndex, i)) *
+                          stdDevDividedByAvgWeightImportance) /
+                         piValue_i;
+        double ratio_j = (((float) instance->values[classIndex][j] / report.getAvgWeightItem(classIndex, j)) *
+                          valueDividedByAvgWeightImportance +
+                          ((float) instance->values[classIndex][j] / report.getStdDevWeightItem(classIndex, j)) *
+                          stdDevDividedByAvgWeightImportance) /
+                         piValue_j;
         return ratio_i > ratio_j;
     });
 }
 
-void sortAll(std::vector<int> &classes, std::vector<std::vector<int>> &items, const AnalyticsReport &report) {
+void sortAll(std::vector<int> &classes, std::vector<std::vector<int>> &items, const AnalyticsReport &report,
+             const Data *instance) {
+    std::cout << "Sorting classes and items..." << std::endl;
     sortClassesByRatioStd(classes, report);
     for (int i = 0; i < classes.size(); i++) {
-        sortItemsByRatioStd(items[i], report, classes[i]);
+        sortItemsByRatioStd(items[i], report, classes[i], instance);
     }
 }
 
@@ -64,6 +77,7 @@ void Greedy::compute(Data *instance) {
     // Create an array of classes + items indices for each class to be sorted
     std::vector<int> sortedClasses(instance->nclasses);
     std::vector<std::vector<int>> sortedItems(instance->nclasses);
+    sortClassesByRatioStd(sortedClasses, report);
     for (int i = 0; i < instance->nclasses; i++) {
         sortedClasses[i] = i;
         sortedItems[i] = std::vector<int>(instance->nitems[i]);
@@ -72,26 +86,6 @@ void Greedy::compute(Data *instance) {
         }
     }
 
-    // Sort from most valuable class to least valuable class
-    sortAll(sortedClasses, sortedItems, report);
-
-    // Print all items for each class and print their most valuable / least valuable ratio
-    for (int i = 0; i < sortedClasses.size(); i++) {
-        std::cout << "Sorted items for class " << sortedClasses[i] << " (average: "
-                  << report.getMeanValueClass(sortedClasses[i]) / report.getMeanWeightClass(sortedClasses[i]) << "): ";
-        for (int j = 0; j < sortedItems[i].size(); j++) {
-            std::cout << "(" << sortedItems[i][j] << ","
-                      << report.getValueAvgWeightRatioItem(sortedClasses[i], sortedItems[i][j]) << ") ";
-        }
-        std::cout << std::endl;
-    }
-
-    // FIXME: POSSIBILE IMPROVEMENT
-    // - A parte cercare gli item con il rapporto valore/peso maggiore
-    // - Implementare un meccanismo di wear leveling per evitare di riempire completamente la capacità di una risorsa
-    //  --> Si potrebbe fare calcolando un indice di "wear" per ogni oggetto (peso oggetto / capacità risorsa) e scegliere quelli con valor
-
-
     std::cout << "======= CALCULATING SOLUTION =======" << std::endl;
 
     // Now, pick the first element that fits in the knapsack
@@ -99,6 +93,14 @@ void Greedy::compute(Data *instance) {
     for (int i = 0; i < sortedClasses.size(); i++) {
         int classIndex = sortedClasses[i];
         bool itemTook = false;
+
+        sortedItems[i] = std::vector<int>(instance->nitems[i]);
+        for (int j = 0; j < instance->nitems[i]; j++) {
+            sortedItems[i][j] = j;
+        }
+
+        sortItemsByRatioStd(sortedItems[i], report, classIndex, instance);
+
         for (int itemIndex: sortedItems[i]) {
             if (EasyInstance::doesItemFit(instance, classIndex, itemIndex)) {
                 // Pick right solution!
