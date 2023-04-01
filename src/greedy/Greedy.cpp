@@ -9,39 +9,55 @@
 #include <iostream>
 #include <algorithm>
 
-static float valueDividedByAvgWeightImportance = 1;
-static float stdDevDividedByAvgWeightImportance = 1;
+void sortClassesByRatioStd(std::vector<int> &classes, const AnalyticsReport &report, const Data *instance) {
+    std::sort(classes.begin(), classes.end(), [&report, &instance](int i, int j) {
 
+        double ratio_i = 0;
+        double ratio_j = 0;
 
-void sortClassesByRatioStd(std::vector<int> &classes, const AnalyticsReport &report) {
-    std::sort(classes.begin(), classes.end(), [&report](int i, int j) {
-        double ratio_i = report.getMeanValueClass(i) / report.getMeanWeightClass(i);
-        double ratio_j = report.getMeanValueClass(j) / report.getMeanWeightClass(j);
+        //class i
+        double sum_v_i = 0;
+        for (auto m = 0; m < instance->nresources; m++) {
+            double sum_w_i = 0;
+            sum_v_i += instance->values[i][m];
+            for (auto k = 0; k < instance->nitems[i]; k++) {
+                sum_w_i += instance->weights[i][k * instance->nresources + m];
+            }
+            ratio_i += (sum_w_i / (double) instance->nitems[i]) /
+                       instance->capacities[m];  // average weight of class i for every item divided by the capacity of the knapsack for that dimension
+        }
+        ratio_i = sum_v_i / ratio_i;
+
+        //class j
+        double sum_v_j = 0;
+        for (auto m = 0; m < instance->nresources; m++) {
+            double sum_w_j = 0;
+            sum_v_j += instance->values[j][m];
+            for (auto k = 0; k < instance->nitems[j]; k++) {
+                sum_w_j += instance->weights[j][k * instance->nresources + m];
+            }
+            ratio_j += (sum_w_j / (double) instance->nitems[j]) /
+                       instance->capacities[m];  // average weight of class j for every item divided by the capacity of the knapsack for that dimension
+        }
+        ratio_j = sum_v_j / ratio_j;
+
         return ratio_i > ratio_j;
     });
 }
 
 void sortItemsByRatioStd(std::vector<int> &items, const AnalyticsReport &report, int classIndex, const Data *instance) {
-    std::cout << "Sorting items..." << std::endl;
     std::sort(items.begin(), items.end(), [&report, classIndex, &instance](int i, int j) {
-        double piValue_i = 0;
-        double piValue_j = 0;
+        double ratio_i = 0;
+        double ratio_j = 0;
         for (auto k = 0; k < instance->nresources; k++) {
-            piValue_i += (instance->weights[classIndex][i * instance->nresources + k] /
-                          (double) instance->capacities[k]);
-            piValue_j += (instance->weights[classIndex][j * instance->nresources + k] /
-                          (double) instance->capacities[k]);
+            ratio_i += (instance->weights[classIndex][i * instance->nresources + k] /
+                        (double) instance->capacities[k]);
+            ratio_j += (instance->weights[classIndex][j * instance->nresources + k] /
+                        (double) instance->capacities[k]);
         }
-        double ratio_i = (((float) instance->values[classIndex][i] / report.getAvgWeightItem(classIndex, i)) *
-                          valueDividedByAvgWeightImportance +
-                          ((float) instance->values[classIndex][i] / report.getStdDevWeightItem(classIndex, i)) *
-                          stdDevDividedByAvgWeightImportance) /
-                         piValue_i;
-        double ratio_j = (((float) instance->values[classIndex][j] / report.getAvgWeightItem(classIndex, j)) *
-                          valueDividedByAvgWeightImportance +
-                          ((float) instance->values[classIndex][j] / report.getStdDevWeightItem(classIndex, j)) *
-                          stdDevDividedByAvgWeightImportance) /
-                         piValue_j;
+        ratio_i = instance->values[classIndex][i] / ratio_i;
+        ratio_j = -instance->values[classIndex][j] / ratio_j;
+        // more ratio is better
         return ratio_i > ratio_j;
     });
 }
@@ -49,7 +65,7 @@ void sortItemsByRatioStd(std::vector<int> &items, const AnalyticsReport &report,
 void sortAll(std::vector<int> &classes, std::vector<std::vector<int>> &items, const AnalyticsReport &report,
              const Data *instance) {
     std::cout << "Sorting classes and items..." << std::endl;
-    sortClassesByRatioStd(classes, report);
+    sortClassesByRatioStd(classes, report, instance);
     for (int i = 0; i < classes.size(); i++) {
         sortItemsByRatioStd(items[i], report, classes[i], instance);
     }
@@ -77,7 +93,6 @@ void Greedy::compute(Data *instance) {
     // Create an array of classes + items indices for each class to be sorted
     std::vector<int> sortedClasses(instance->nclasses);
     std::vector<std::vector<int>> sortedItems(instance->nclasses);
-    sortClassesByRatioStd(sortedClasses, report);
     for (int i = 0; i < instance->nclasses; i++) {
         sortedClasses[i] = i;
         sortedItems[i] = std::vector<int>(instance->nitems[i]);
@@ -94,12 +109,7 @@ void Greedy::compute(Data *instance) {
         int classIndex = sortedClasses[i];
         bool itemTook = false;
 
-        sortedItems[i] = std::vector<int>(instance->nitems[i]);
-        for (int j = 0; j < instance->nitems[i]; j++) {
-            sortedItems[i][j] = j;
-        }
-
-        sortItemsByRatioStd(sortedItems[i], report, classIndex, instance);
+        sortAll(sortedClasses, sortedItems, report, instance);
 
         for (int itemIndex: sortedItems[i]) {
             if (EasyInstance::doesItemFit(instance, classIndex, itemIndex)) {
@@ -119,7 +129,9 @@ void Greedy::compute(Data *instance) {
             std::cout << "Done " << i << " classes out of " << sortedClasses.size() << std::endl;
             exit(1);
         }
+        sortedClasses.erase(sortedClasses.begin() + i);
     }
+
     std::cout << "======= SOLUTION CALCULATED =======" << std::endl;
 
     // Print solution to stdout
