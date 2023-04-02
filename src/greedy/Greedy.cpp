@@ -53,7 +53,7 @@ void sortItemsByRatioStd(std::vector<int> &items, const AnalyticsReport &report,
             ratio_i += (instance->weights[classIndex][i * instance->nresources + k] /
                         (double) instance->capacities[k]);
             ratio_j += (instance->weights[classIndex][j * instance->nresources + k] /
-                        (double) instance->capacities[k]);
+                        (double) instance->capacities[k] );
         }
         ratio_i = instance->values[classIndex][i] / ratio_i;
         ratio_j = -instance->values[classIndex][j] / ratio_j;
@@ -106,12 +106,13 @@ void Greedy::compute(Data *instance) {
     // Now, pick the first element that fits in the knapsack
     // Note: if item i is picked, then all items j with j > i are discarded
     for (int i = 0; i < sortedClasses.size(); i++) {
-        int classIndex = sortedClasses[i];
-        bool itemTook = false;
-
         sortAll(sortedClasses, sortedItems, report, instance);
 
-        for (int itemIndex: sortedItems[i]) {
+        int classIndex = sortedClasses[0];
+        bool itemTook = false;
+
+
+        for (int itemIndex: sortedItems[classIndex]) {
             if (EasyInstance::doesItemFit(instance, classIndex, itemIndex)) {
                 // Pick right solution!
                 EasyInstance::pickSolution(instance, classIndex, itemIndex);
@@ -129,7 +130,7 @@ void Greedy::compute(Data *instance) {
             std::cout << "Done " << i << " classes out of " << sortedClasses.size() << std::endl;
             exit(1);
         }
-        sortedClasses.erase(sortedClasses.begin() + i);
+        sortedClasses.erase(sortedClasses.begin());
     }
 
     std::cout << "======= SOLUTION CALCULATED =======" << std::endl;
