@@ -65,8 +65,8 @@ void sortItemsByRatioStd(std::vector<int> &items, int classIndex, const Data *in
 void sortAll(std::vector<int> &classes, std::vector<std::vector<int>> &items, const Data *instance) {
     std::cout << "Sorting classes and items..." << std::endl;
     sortClassesByRatioStd(classes, instance);
-    for (int classe : classes) {
-        sortItemsByRatioStd(items[classe], classe, instance);
+    for (int c : classes) {
+        sortItemsByRatioStd(items[c], c, instance);
     }
 }
 
@@ -104,7 +104,7 @@ void Greedy::compute(Data *instance) {
 
     // Now, pick the first element that fits in the knapsack
     // Note: if item i is picked, then all items j with j > i are discarded
-    for (long long unsigned int i = 0; i < sortedClasses.size(); i++) {
+    for (int i = 0; i < instance->nclasses; i++) {
         sortAll(sortedClasses, sortedItems, instance);
 
         int classIndex = sortedClasses[0];
