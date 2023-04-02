@@ -15,8 +15,8 @@ AnalyticsReport::AnalyticsReport(int nClasses, const std::vector<int> *nItemsPer
     m_meanValue_class.resize(nClasses);
     m_meanWeight_class.resize(nClasses);
     int nItems = 0;
-    for(int i = 0; i < nItemsPerClass->size(); i ++)
-        nItems += nItemsPerClass->at(i);
+    for(int nItemsPerClas : *nItemsPerClass)
+        nItems += nItemsPerClas;
     m_valueAvgWeightRatio_item.resize(nItems);
     m_stdDevValue_item.resize(nItems);
     m_valueAvgWeight_item.resize(nItems);

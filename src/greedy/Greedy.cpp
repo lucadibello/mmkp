@@ -9,8 +9,8 @@
 #include <iostream>
 #include <algorithm>
 
-void sortClassesByRatioStd(std::vector<int> &classes, const AnalyticsReport &report, const Data *instance) {
-    std::sort(classes.begin(), classes.end(), [&report, &instance](int i, int j) {
+void sortClassesByRatioStd(std::vector<int> &classes, const Data *instance) {
+    std::sort(classes.begin(), classes.end(), [&instance](int i, int j) {
 
         double ratio_i = 0;
         double ratio_j = 0;
@@ -45,29 +45,28 @@ void sortClassesByRatioStd(std::vector<int> &classes, const AnalyticsReport &rep
     });
 }
 
-void sortItemsByRatioStd(std::vector<int> &items, const AnalyticsReport &report, int classIndex, const Data *instance) {
-    std::sort(items.begin(), items.end(), [&report, classIndex, &instance](int i, int j) {
+void sortItemsByRatioStd(std::vector<int> &items, int classIndex, const Data *instance) {
+    std::sort(items.begin(), items.end(), [classIndex, &instance](int i, int j) {
         double ratio_i = 0;
         double ratio_j = 0;
         for (auto k = 0; k < instance->nresources; k++) {
             ratio_i += (instance->weights[classIndex][i * instance->nresources + k] /
                         (double) instance->capacities[k]);
             ratio_j += (instance->weights[classIndex][j * instance->nresources + k] /
-                        (double) instance->capacities[k] );
+                        (double) instance->capacities[k]);
         }
         ratio_i = instance->values[classIndex][i] / ratio_i;
-        ratio_j = -instance->values[classIndex][j] / ratio_j;
+        ratio_j = instance->values[classIndex][j] / ratio_j;
         // more ratio is better
         return ratio_i > ratio_j;
     });
 }
 
-void sortAll(std::vector<int> &classes, std::vector<std::vector<int>> &items, const AnalyticsReport &report,
-             const Data *instance) {
+void sortAll(std::vector<int> &classes, std::vector<std::vector<int>> &items, const Data *instance) {
     std::cout << "Sorting classes and items..." << std::endl;
-    sortClassesByRatioStd(classes, report, instance);
-    for (int i = 0; i < classes.size(); i++) {
-        sortItemsByRatioStd(items[i], report, classes[i], instance);
+    sortClassesByRatioStd(classes, instance);
+    for (int classe : classes) {
+        sortItemsByRatioStd(items[classe], classe, instance);
     }
 }
 
@@ -105,8 +104,8 @@ void Greedy::compute(Data *instance) {
 
     // Now, pick the first element that fits in the knapsack
     // Note: if item i is picked, then all items j with j > i are discarded
-    for (int i = 0; i < sortedClasses.size(); i++) {
-        sortAll(sortedClasses, sortedItems, report, instance);
+    for (long long unsigned int i = 0; i < sortedClasses.size(); i++) {
+        sortAll(sortedClasses, sortedItems, instance);
 
         int classIndex = sortedClasses[0];
         bool itemTook = false;
