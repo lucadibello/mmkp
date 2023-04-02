@@ -28,6 +28,8 @@ AnalyticsReport Analytics::run(const Data * instance) {
         int classMeanValue = 0;
         float classMeanWeight = 0;
         for (auto j = 0; j < nItemsPerClass; j++) {
+            if(i == 88 && j == 4)
+                std::cout << "";
             const int itemValue = instance->values[i][j];
 
             //std::vector<int> itemWeights = instance->weights[i];

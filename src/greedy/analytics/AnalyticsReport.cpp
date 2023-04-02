@@ -19,7 +19,8 @@ AnalyticsReport::AnalyticsReport(int nClasses, const std::vector<int> *nItemsPer
         nItems += nItemsPerClas;
     m_valueAvgWeightRatio_item.resize(nItems);
     m_stdDevValue_item.resize(nItems);
-    m_valueAvgWeight_item.resize(nItems);
+    //m_valueAvgWeight_item.resize(nItems);
+    m_valueAvgWeight_item.resize(nClasses);
     m_pValue_item.resize(nItems);
     m_itemRatio.resize(nItems);
     //m_valueAvgWeightRatio_item[i * m_nItems[i] + j]
@@ -77,7 +78,10 @@ void AnalyticsReport::setMeanWeightClass(int classIndex, float meanWeight) {
  * @return std dev weight ratio of the item.
  */
 void AnalyticsReport::setStdDevWeightItem(int classIndex, int itemIndex, float stdDevValue) {
-    m_stdDevValue_item[classIndex * m_nItems->at(classIndex) + itemIndex] = stdDevValue;
+    int nItemsPerClass = m_nItems->at(classIndex);
+    if(classIndex == 88)
+        std::cout<< "";
+    m_stdDevValue_item[classIndex * nItemsPerClass + itemIndex] = stdDevValue;
 }
 
 /**
@@ -87,7 +91,12 @@ void AnalyticsReport::setStdDevWeightItem(int classIndex, int itemIndex, float s
  * @return average weight ratio of the item.
  */
 void AnalyticsReport::setAvgWeightItem(int classIndex, int itemIndex, float avgWeightValue){
-    m_valueAvgWeight_item[classIndex * m_nItems->at(classIndex) + itemIndex] = avgWeightValue;
+    int nItemsPerClass = m_nItems->at(classIndex);
+    if(itemIndex == 0) {
+        m_valueAvgWeight_item[classIndex].resize(nItemsPerClass);
+    }
+    //m_valueAvgWeight_item[classIndex * nItemsPerClass + itemIndex] = avgWeightValue;
+    m_valueAvgWeight_item[classIndex][itemIndex] = avgWeightValue;
 }
 
 
@@ -119,7 +128,7 @@ float AnalyticsReport::getMeanWeightClass(int classIndex) const {
 }
 
 float AnalyticsReport::getAvgWeightItem(int classIndex, int itemIndex) const {
-    return m_valueAvgWeight_item[classIndex * m_nItems->at(classIndex) + itemIndex];
+    return m_valueAvgWeight_item[classIndex][itemIndex];
 }
 
 float AnalyticsReport::getStdDevWeightItem(int classIndex, int itemIndex) const {
