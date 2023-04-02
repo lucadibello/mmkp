@@ -17,11 +17,10 @@ AnalyticsReport::AnalyticsReport(int nClasses, const std::vector<int> *nItemsPer
     int nItems = 0;
     for(int nItemsPerClas : *nItemsPerClass)
         nItems += nItemsPerClas;
-    m_valueAvgWeightRatio_item.resize(nItems);
-    m_stdDevValue_item.resize(nItems);
-    //m_valueAvgWeight_item.resize(nItems);
+    m_valueAvgWeightRatio_item.resize(nClasses);
+    m_stdDevValue_item.resize(nClasses);
     m_valueAvgWeight_item.resize(nClasses);
-    m_pValue_item.resize(nItems);
+    m_pValue_item.resize(nClasses);
     m_itemRatio.resize(nItems);
     //m_valueAvgWeightRatio_item[i * m_nItems[i] + j]
 }
@@ -35,6 +34,7 @@ AnalyticsReport::~AnalyticsReport() {
     m_meanValue_class.clear();
     m_meanWeight_class.clear();
     m_valueAvgWeightRatio_item.clear();
+    m_pValue_item.clear();
 }
 
 /**
@@ -78,10 +78,11 @@ void AnalyticsReport::setMeanWeightClass(int classIndex, float meanWeight) {
  * @return std dev weight ratio of the item.
  */
 void AnalyticsReport::setStdDevWeightItem(int classIndex, int itemIndex, float stdDevValue) {
-    int nItemsPerClass = m_nItems->at(classIndex);
-    if(classIndex == 88)
-        std::cout<< "";
-    m_stdDevValue_item[classIndex * nItemsPerClass + itemIndex] = stdDevValue;
+    if(itemIndex == 0) {
+        int nItemsPerClass = m_nItems->at(classIndex);
+        m_stdDevValue_item[classIndex].resize(nItemsPerClass);
+    }
+    m_stdDevValue_item[classIndex][itemIndex] = stdDevValue;
 }
 
 /**
@@ -91,11 +92,10 @@ void AnalyticsReport::setStdDevWeightItem(int classIndex, int itemIndex, float s
  * @return average weight ratio of the item.
  */
 void AnalyticsReport::setAvgWeightItem(int classIndex, int itemIndex, float avgWeightValue){
-    int nItemsPerClass = m_nItems->at(classIndex);
     if(itemIndex == 0) {
+        int nItemsPerClass = m_nItems->at(classIndex);
         m_valueAvgWeight_item[classIndex].resize(nItemsPerClass);
     }
-    //m_valueAvgWeight_item[classIndex * nItemsPerClass + itemIndex] = avgWeightValue;
     m_valueAvgWeight_item[classIndex][itemIndex] = avgWeightValue;
 }
 
@@ -112,9 +112,9 @@ void AnalyticsReport::print() const {
         std::cout << "\t- Mean weight of the class: " << m_meanWeight_class[i] << std::endl;
         for (auto j = 0; j < m_nItems->at(i); j++) {
             std::cout << "\t- Item " << j << std::endl;
-            std::cout << "\t\t- Value/average weight ratio: " << m_valueAvgWeightRatio_item[i * m_nItems->at(i) + j] << std::endl;
-            std::cout << "\t\t- Standard deviation of the value: " << m_stdDevValue_item[i * m_nItems->at(i) + j] << std::endl;
-            std::cout << "\t\t- P value: " << m_pValue_item[i * m_nItems->at(i) + j] << std::endl;
+            std::cout << "\t\t- Value/average weight ratio: " << m_valueAvgWeightRatio_item[i][j] << std::endl;
+            std::cout << "\t\t- Standard deviation of the value: " << m_stdDevValue_item[i][j] << std::endl;
+            std::cout << "\t\t- P value: " << m_pValue_item[i][j] << std::endl;
         }
     }
 }
@@ -132,5 +132,5 @@ float AnalyticsReport::getAvgWeightItem(int classIndex, int itemIndex) const {
 }
 
 float AnalyticsReport::getStdDevWeightItem(int classIndex, int itemIndex) const {
-    return m_stdDevValue_item[classIndex * m_nItems->at(classIndex) + itemIndex];
+    return m_stdDevValue_item[classIndex][itemIndex];
 }

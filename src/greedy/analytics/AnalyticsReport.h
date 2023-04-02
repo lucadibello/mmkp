@@ -39,12 +39,11 @@ private:
 
     // Analytics of each item
     // Notice: Position of the item in the vector: classIndex * nItemsPerClass + itemIndex
-    std::vector<float> m_valueAvgWeightRatio_item;
-    std::vector<float> m_stdDevValue_item;
-    //std::vector<float> m_valueAvgWeight_item;
+    std::vector<std::vector<float>> m_valueAvgWeightRatio_item;
+    std::vector<std::vector<float>> m_stdDevValue_item;
     std::vector<std::vector<float>> m_valueAvgWeight_item;
     // p value is the sum of the percentage for each weight class divided by the max capacity of the knapsack. (w1/Q1 + w2/Q2 + ... + wn/Qn)
-    std::vector<double> m_pValue_item;
+    std::vector<std::vector<float>> m_pValue_item;
 
     // Final items ratio
     std::vector<double> m_itemRatio;
