@@ -1,10 +1,7 @@
 #include "data.h"
 #include <iostream>
 #include <fstream>
-#include <algorithm>
 #include <sstream>
-
-//#define MYDEBUG
 
 using namespace std;
 

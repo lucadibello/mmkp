@@ -117,7 +117,7 @@ int data::read_time(const string& instance) {
 }
 
 int data::verify_solution(double *val) {
-    cout << "Verify solution: ";
+    cout << "Verify solution: " << endl;
     double tmpval = 0.0;
     vector<int> consumption(nresources, 0);
 
@@ -127,11 +127,12 @@ int data::verify_solution(double *val) {
         tmpval += values[i][solution[i]];
 
         // Print solution + related weights
-        cout << values[i][solution[i]] << " (index: " << solution[i] << ") = ";
+        cout << "[Class #"<< i << "] " << values[i][solution[i]] << " (index: " << solution[i] << ") = ";
+        cout << "[";
         for (auto k = 0; k < nresources; k++) {
             cout << weights[i][solution[i] * nresources + k] << " ";
         }
-        cout << endl;
+        cout << "]" << endl;
 
         // Compute current knapsack consumption after picking solution of class i
         for (auto k = 0; k < nresources; k++) {
@@ -139,10 +140,22 @@ int data::verify_solution(double *val) {
 
             // Check if knapsack is overloaded
             if (consumption[k] > capacities[k]) {
-                cout << "Unfeasible on resource " << k << endl;
+                cout << "Unfeasible on resource " << k << " (consumption: " << consumption[k] << ", capacity: " << capacities[k] << ")" << endl;
+
+                cout << "Print current knapsack remaining: ";
+                for (auto k = 0; k < nresources; k++) {
+                    cout << capacities[k] - consumption[k] << " ";
+                }
+                cout << endl;
+
                 return 1;
             }
         }
+
+        for (auto k = 0; k < nresources; k++) {
+            cout << capacities[k] - consumption[k] << " ";
+        }
+        cout << endl;
     }
 
     // Print current knapsack consumption
