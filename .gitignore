@@ -39,5 +39,5 @@ fabric.properties
 */.DS_Store
 
 # MMKP runner output
-mmkpRunner/stats.txt
+verifier/stats.txt
 

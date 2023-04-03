@@ -34,8 +34,6 @@ csv_file_name=$(basename "$1")
 # Save the real time to a file
 output=$( { time ./cmake-build-debug/mmkp -i "$1" -t 60; } 2>&1 )
 
-# Print the second last line of the output
-echo "$output" | tail -n 2 | head -n 1
 
 # Get the real time
 # This is the output: ./cmake-build-debug/mmkp -i "$1" -t 60  0.01s user 0.00s system 93% cpu 0.009 total
@@ -47,5 +45,9 @@ real_time=$(tail -n 1 <<< "$output" | awk '{print $12}')
 # Overwrite the file if it exists
 echo "$real_time" > "$csv_file_dir/$csv_file_name.time"
 
-# Print the real time
-echo "Total time: $real_time seconds"
+# Check for verbose flag
+if [ "$2" = "-v" ]; then
+    # Print the output
+    echo "$output" | tail -n 2 | head -n 1
+    echo "Total time: $real_time seconds"
+fi

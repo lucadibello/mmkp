@@ -1,15 +1,13 @@
 #include "data.h"
 #include <iostream>
 #include <fstream>
-#include <algorithm>
+#include <string>
 #include <sstream>
-
-//#define MYDEBUG
 
 using namespace std;
 
-int Data::read_input(const string& instance) {
-    cout << "Loading instance: " << instance << " ";
+int data::read_input(const string& instance) {
+    cout << "Read instance: " << instance << " ";
 
     fstream newfile;
     newfile.open(instance, ios::in);
@@ -48,7 +46,7 @@ int Data::read_input(const string& instance) {
             }
         }
         newfile.close();
-        cout << "Done." << endl;
+        cout << "Done." << endl << endl;
 
 #ifdef MYDEBUG
         // Print for debug purposes
@@ -73,7 +71,7 @@ int Data::read_input(const string& instance) {
     return 0;
 }
 
-int Data::read_output(const string& instance) {
+int data::read_output(const string& instance) {
     cout << "Read solution: " << instance << " ";
 
     fstream newfile;
@@ -91,7 +89,7 @@ int Data::read_output(const string& instance) {
                 newfile.close();
                 return 2;
             }
-            if ((solution[i] < 0) || (solution[i] >= nitems[i])) {
+            if (solution[i] >= nitems[i]) {
                 // Solution contains an item that does not exist
                 newfile.close();
                 return 3;
@@ -107,7 +105,7 @@ int Data::read_output(const string& instance) {
     return 0;
 }
 
-int Data::read_time(const string& instance) {
+int data::read_time(const string& instance) {
     fstream newfile;
     newfile.open(instance, ios::in);
     if (newfile.is_open()) {
@@ -118,21 +116,43 @@ int Data::read_time(const string& instance) {
     return 0;
 }
 
-int Data::verify_solution(double *val) {
+int data::verify_solution(double *val) {
     cout << "Verify solution: ";
     double tmpval = 0.0;
     vector<int> consumption(nresources, 0);
+
+    // Cycle through all classes
     for (auto i = 0; i < nclasses; i++) {
+        // Add value of solution of class i
         tmpval += values[i][solution[i]];
+
+        // Print solution + related weights
+        cout << values[i][solution[i]] << " (index: " << solution[i] << ") = ";
+        for (auto k = 0; k < nresources; k++) {
+            cout << weights[i][solution[i] * nresources + k] << " ";
+        }
+        cout << endl;
+
+        // Compute current knapsack consumption after picking solution of class i
         for (auto k = 0; k < nresources; k++) {
             consumption[k] += weights[i][solution[i] * nresources + k];
+
+            // Check if knapsack is overloaded
             if (consumption[k] > capacities[k]) {
-                cout << "Unfeasible on resource " << k << endl << endl;
+                cout << "Unfeasible on resource " << k << endl;
                 return 1;
             }
         }
     }
+
+    // Print current knapsack consumption
+    cout << "Consumption: ";
+    for (auto k = 0; k < nresources; k++) {
+        cout << consumption[k] << " ";
+    }
+    cout << endl;
+
     *val = tmpval;
-    cout << "Feasible, value " << tmpval << endl << endl;
+    cout << "Feasible, value " << tmpval << endl;
     return 0;
 }
