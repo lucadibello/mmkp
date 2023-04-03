@@ -14,3 +14,6 @@ add_executable(converter
         src/data.cpp
         src/data.h
         src/converter/DataConverter.cpp)
+
+add_executable(runner
+        mmkpRunner/main.cpp mmkpRunner/data.cpp mmkprunner/data.h)

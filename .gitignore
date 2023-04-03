@@ -15,6 +15,7 @@ out/
 
 # Output file
 *.out
+*.time
 
 # AMPL sover temporary files
 AMPLsolver/*.dat
@@ -36,3 +37,7 @@ fabric.properties
 # MacOS
 .DS_Store
 */.DS_Store
+
+# MMKP runner output
+mmkpRunner/stats.txt
+
