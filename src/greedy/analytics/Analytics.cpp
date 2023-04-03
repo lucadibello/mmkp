@@ -37,10 +37,12 @@ AnalyticsReport Analytics::run(const Data * instance) {
             const float weightStdDev = FastMath::fastStdDev(j * instance->nresources, instance->nresources, &instance->weights[i]);
 
             // calculate p value
+            /* FIXME: WHY THIS IS UNUSED??
             double pValue = 0;
             for (auto k = 0; k < instance->nresources; k++) {
                 pValue += (instance->weights[i][j * instance->nresources + k] / (double)instance->capacities[k]);
             }
+            */
 
             // Update counters
             classMeanValue += itemValue;

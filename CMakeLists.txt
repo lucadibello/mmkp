@@ -16,3 +16,6 @@ add_executable(converter
         src/data.cpp
         src/data.h
         src/converter/DataConverter.cpp)
+
+add_executable(verifier
+        verifier/main.cpp verifier/data.cpp verifier/data.h)
