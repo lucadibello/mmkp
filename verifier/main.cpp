@@ -137,12 +137,20 @@ int main(int argc, char *argv[]) {
         res = instance.verify_solution(&value);
         if (res == 1) {
             outfile << "," << input << ",0.0,0.0,Solution is not feasible" << std::endl;
+
+            // Return -1 in stderr to be easily detected by the script
+            std::cerr << "-1" << std::endl;
+
             outfile.close();
             exit(0);
         }
 
         outfile << "," << input << "," << value << "," << instance.ptime << ",Solution is feasible" << std::endl;
         outfile.close();
+
+        // Return total value in stderr to be easily detected by the script
+        std::cerr << value << std::endl;
+
         exit(0);
     }
 }
