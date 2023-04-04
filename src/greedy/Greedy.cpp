@@ -16,31 +16,32 @@ void sortClassesByRatioStd(std::vector<int> &classes, const Data *instance) {
         double ratio_j = 0;
 
         //class i
-        double sum_v_i = 0;
+        //double sum_v_i = 0;
         for (auto m = 0; m < instance->nresources; m++) {
             double sum_w_i = 0;
-            sum_v_i += instance->values[i][m];
+            //sum_v_i += instance->values[i][m];
             for (auto k = 0; k < instance->nitems[i]; k++) {
                 sum_w_i += instance->weights[i][k * instance->nresources + m];
             }
             ratio_i += (sum_w_i / (double) instance->nitems[i]) /
                        instance->capacities[m];  // average weight of class i for every item divided by the capacity of the knapsack for that dimension
         }
-        ratio_i = sum_v_i / ratio_i;
+        //ratio_i = sum_v_i / ratio_i;
 
         //class j
-        double sum_v_j = 0;
+        //double sum_v_j = 0;
         for (auto m = 0; m < instance->nresources; m++) {
             double sum_w_j = 0;
-            sum_v_j += instance->values[j][m];
+            //sum_v_j += instance->values[j][m];
             for (auto k = 0; k < instance->nitems[j]; k++) {
                 sum_w_j += instance->weights[j][k * instance->nresources + m];
             }
             ratio_j += (sum_w_j / (double) instance->nitems[j]) /
                        instance->capacities[m];  // average weight of class j for every item divided by the capacity of the knapsack for that dimension
         }
-        ratio_j = sum_v_j / ratio_j;
+        //ratio_j = sum_v_j / ratio_j;
 
+        // start with the worst class
         return ratio_i > ratio_j;
     });
 }
@@ -55,21 +56,12 @@ void sortItemsByRatioStd(std::vector<int> &items, int classIndex, const Data *in
             ratio_j += (instance->weights[classIndex][j * instance->nresources + k] /
                         (double) instance->capacities[k]);
         }
-        ratio_i = instance->values[classIndex][i] / ratio_i;
-        ratio_j = instance->values[classIndex][j] / ratio_j;
-        // more ratio is better
-        return ratio_i > ratio_j;
+        //ratio_i = instance->values[classIndex][i] / ratio_i;
+        //ratio_j = instance->values[classIndex][j] / ratio_j;
+        // less ratio is better
+        return ratio_i < ratio_j;
     });
 }
-
-void sortAll(std::vector<int> &classes, std::vector<std::vector<int>> &items, const Data *instance) {
-    std::cout << "Sorting classes and items..." << std::endl;
-    sortClassesByRatioStd(classes, instance);
-    for (int c : classes) {
-        sortItemsByRatioStd(items[c], c, instance);
-    }
-}
-
 
 void printCapacities(Data *instance) {
     std::cout << "Capacities: ";
@@ -105,11 +97,10 @@ void Greedy::compute(Data *instance) {
     // Now, pick the first element that fits in the knapsack
     // Note: if item i is picked, then all items j with j > i are discarded
     for (int i = 0; i < instance->nclasses; i++) {
-        sortAll(sortedClasses, sortedItems, instance);
-
+        sortClassesByRatioStd(sortedClasses, instance);
         int classIndex = sortedClasses[0];
+        sortItemsByRatioStd(sortedItems[classIndex], classIndex, instance);
         bool itemTook = false;
-
 
         for (int itemIndex: sortedItems[classIndex]) {
             if (EasyInstance::doesItemFit(instance, classIndex, itemIndex)) {
