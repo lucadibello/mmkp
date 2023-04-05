@@ -25,27 +25,20 @@ int main(int argc, char *argv[]) {
     instance.read_input(input);
 
     std::string output = input;
+
+    // Remove .txt extension
+    output = output.substr(0, output.size() - 4);
     output.append(".dat");
     std::cout << "Output name:" << output << "\n";
     std::ofstream outfile(output);
     std::cout.rdbuf(outfile.rdbuf());
 
-    // Print information related to dataset
-    //printf("\nTotal classes: %d, Total items: %d\n", instance.nclasses, instance.nresources);
-    for (auto i = 0; i < instance.nresources; i++) {
-        //printf("Class n: %d has capacity of %d\n", i, instance.capacities[i]);
 
-        // Print the items of the class (value + weights)
-        for (auto j = 0; j < instance.nitems[i]; j++) {
-            //printf("Item n: %d has value of %d and weights of ", j, instance.values[i][j]);
-            for (auto k = 0; k < instance.nresources; k++) {
-                //printf("%d ", instance.weights[i][j * instance.nresources + k]);
-            }
-            // printf("\n");
-        }
-    }
+    // Print header
 
-    std::cout << "%%writefile " << output << std::endl;
+    // Change output name removing folder path
+    std::string name = output.substr(output.find_last_of("\\") + 1);
+    std::cout << "%%writefile " << name << std::endl;
 
     int nClasses = instance.nclasses;
     int nItems = instance.nitems[0];
@@ -57,6 +50,7 @@ int main(int argc, char *argv[]) {
 
     std::cout << std::endl;
 
+    // Param q
     std::cout << "# Max capacity" << std::endl;
     std::cout << "param q :=" << std::endl;
     for (int i = 0; i < instance.capacities.size(); i++) {
@@ -67,6 +61,7 @@ int main(int argc, char *argv[]) {
 
     std::cout << std::endl;
 
+    // Param v
     std::cout << "# Volume (columns = N = items,  rows = C = classes)" << std::endl;
     std::cout << "param v (tr): ";
     for (int c = 0; c < nClasses; c++) {
@@ -85,6 +80,7 @@ int main(int argc, char *argv[]) {
     std::cout << ";" << std::endl;
     std::cout << std::endl;
 
+    // Param w
     std::cout << "# Weights" << std::endl;
     std::cout << "param w := ";
     for (int r = 0; r < nResources; r++) {
