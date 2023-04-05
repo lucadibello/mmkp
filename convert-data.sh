@@ -9,7 +9,7 @@ fi
 
 # If the argument is provided, check if the file exists
 if [ ! -f "$1" ]; then
-    echo "[!] CSV file does not exist"
+    echo "[!] Input txt file does not exist"
     exit 1
 fi
 

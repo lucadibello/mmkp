@@ -89,6 +89,10 @@ void Greedy::compute(Data *instance) {
     for (int i = 0; i < sortedClasses.size(); i++) {
         int classIndex = sortedClasses[i];
         for (int itemIndex : sortedItems[i]) {
+
+            // print capacities
+            printCapacities(instance);
+
             if (EasyInstance::doesItemFit(instance, classIndex, itemIndex)) {
                 // Pick right solution!
                 EasyInstance::pickSolution(instance, classIndex, itemIndex);
