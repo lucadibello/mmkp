@@ -10,7 +10,7 @@
 
 class Greedy {
 public:
-    static void compute(Data * instance);
+    static void compute(Data * instance, int timeLimit);
 };
 
 
