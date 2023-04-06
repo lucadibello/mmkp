@@ -23,6 +23,12 @@ fi
 if [ "$skip_compute" = false ]; then
     echo "[!] Running MMKP for large files..."
 
+    # Delete all .out and .time files in the data/standard and data/large directories
+    rm data/large/*.out
+    rm data/large/*.time
+    rm data/standard/*.out
+    rm data/standard/*.time
+
     if [ "$only_standard" = false ]; then
         for file in data/large/*.txt; do
             ./start-mmkp.sh "$file"

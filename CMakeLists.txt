@@ -8,7 +8,7 @@ include_directories(.)
 add_executable(mmkp
         src/data.cpp
         src/data.h
-        src/main.cpp src/utility/EasyInstance.cpp src/utility/EasyInstance.h src/greedy/analytics/Analytics.cpp src/greedy/analytics/Analytics.h src/greedy/analytics/AnalyticsReport.cpp src/greedy/analytics/AnalyticsReport.h src/utility/FastMath.cpp src/utility/FastMath.h src/greedy/Greedy.cpp src/greedy/Greedy.h)
+        src/main.cpp src/utility/EasyInstance.cpp src/utility/EasyInstance.h src/utility/FastMath.cpp src/utility/FastMath.h src/greedy/Greedy.cpp src/greedy/Greedy.h)
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     target_compile_options(mmkp PRIVATE -Wall -Wextra -pedantic -Werror)
 endif()

@@ -3,12 +3,8 @@
 #include <unistd.h>
 #include <cstring>
 #include "data.h"
-#include "src/utility/EasyInstance.h"
-#include "src/greedy/analytics/AnalyticsReport.h"
-#include "src/greedy/analytics/Analytics.h"
 #include "src/greedy/Greedy.h"
 #include <cstdlib>
-#include <cstdio>
 #include <csignal>
 
 static Data instance;
@@ -80,7 +76,7 @@ int main(int argc, char *argv[])
     instance.read_input(input);
 
     // Compute greedy solution here!
-    Greedy::compute(&instance);
+    Greedy::compute(&instance, inttimelimit);
 
     // Write solution to file
     writeSolution();

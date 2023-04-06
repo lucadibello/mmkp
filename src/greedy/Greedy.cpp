@@ -3,8 +3,6 @@
 //
 
 #include "Greedy.h"
-#include "src/greedy/analytics/AnalyticsReport.h"
-#include "src/greedy/analytics/Analytics.h"
 #include "src/utility/EasyInstance.h"
 #include <iostream>
 #include <algorithm>
@@ -56,48 +54,50 @@ void sortItemsByRatioStd(std::vector<int> &items, int classIndex, const Data *in
             ratio_j += (instance->weights[classIndex][j * instance->nresources + k] /
                         (double) instance->capacities[k]);
         }
-        //ratio_i = instance->values[classIndex][i] / ratio_i;
-        //ratio_j = instance->values[classIndex][j] / ratio_j;
         // less ratio is better
         return ratio_i < ratio_j;
     });
 }
 
-void printCapacities(Data *instance) {
-    std::cout << "Capacities: ";
-    for (auto k = 0; k < instance->nresources; k++) {
-        std::cout << instance->capacities[k] << " ";
-    }
-    std::cout << std::endl;
-}
-
-void Greedy::compute(Data *instance) {
-    // Compute analysis of the dataset
-    AnalyticsReport report = Analytics::run(instance);
+void Greedy::compute(Data *instance, int timeLimit) {
+    // Is in beast mode?
+    bool beastMode = timeLimit <= 1;
 
     /* ******************** */
     /*    Greedy Solution   */
     /* ******************** */
 
-    std::cout << "Computing greedy solution..." << std::endl;
-
     // Create an array of classes + items indices for each class to be sorted
     std::vector<int> sortedClasses(instance->nclasses);
     std::vector<std::vector<int>> sortedItems(instance->nclasses);
+    long totalItems = 0;
     for (int i = 0; i < instance->nclasses; i++) {
         sortedClasses[i] = i;
         sortedItems[i] = std::vector<int>(instance->nitems[i]);
         for (int j = 0; j < instance->nitems[i]; j++) {
             sortedItems[i][j] = j;
+            totalItems++;
         }
     }
 
-    std::cout << "======= CALCULATING SOLUTION =======" << std::endl;
+    bool skipSortings = false;
+    if (beastMode) {
+        long tot = instance->nclasses * totalItems;
+        if (tot > 1750000) {
+            skipSortings = true;
+        }
+    }
 
     // Now, pick the first element that fits in the knapsack
     // Note: if item i is picked, then all items j with j > i are discarded
-    for (int i = 0; i < instance->nclasses; i++) {
+    if (skipSortings) {
         sortClassesByRatioStd(sortedClasses, instance);
+    }
+
+    for (int i = 0; i < instance->nclasses; i++) {
+        if (!skipSortings) {
+            sortClassesByRatioStd(sortedClasses, instance);
+        }
         int classIndex = sortedClasses[0];
         sortItemsByRatioStd(sortedItems[classIndex], classIndex, instance);
         bool itemTook = false;
@@ -108,32 +108,12 @@ void Greedy::compute(Data *instance) {
                 EasyInstance::pickSolution(instance, classIndex, itemIndex);
                 // Print capacities
                 itemTook = true;
-                printCapacities(instance);
                 break;
-            } else {
-                std::cout << "Item " << itemIndex << " of class " << classIndex << " does not fit in the knapsack"
-                          << std::endl;
             }
         }
         if (!itemTook) {
-            std::cout << "No item of class " << classIndex << " fits in the knapsack" << std::endl;
-            std::cout << "Done " << i << " classes out of " << sortedClasses.size() << std::endl;
             exit(1);
         }
         sortedClasses.erase(sortedClasses.begin());
     }
-
-    std::cout << "======= SOLUTION CALCULATED =======" << std::endl;
-
-    // Print solution to stdout
-    std::cout << "Solution: " << std::endl;
-    for (int i = 0; i < instance->nclasses; i++) {
-        std::cout << "Class #" << i << " -> Item #" << instance->solution[i] << std::endl;
-    }
-
-    std::cout << "Remaining capacities: ";
-    for (auto k = 0; k < instance->nresources; k++) {
-        std::cout << instance->capacities[k] << " ";
-    }
-    std::cout << std::endl;
 }

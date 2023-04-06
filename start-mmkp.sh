@@ -32,7 +32,7 @@ csv_file_name=$(basename "$1")
 
 # Start MMKP executable with the file as argument + measure the real time
 # Save the real time to a file
-output=$( { time ./cmake-build-debug/mmkp -i "$1" -t 60; } 2>&1 )
+output=$( { time ./cmake-build-debug/mmkp -i "$1" -t 1; } 2>&1 )
 
 
 # Get the real time
