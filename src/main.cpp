@@ -4,6 +4,7 @@
 #include <cstring>
 #include "data.h"
 #include "src/greedy/Greedy.h"
+#include "src/localSearch/LocalSearch.h"
 #include <cstdlib>
 #include <csignal>
 
@@ -77,6 +78,9 @@ int main(int argc, char *argv[])
 
     // Compute greedy solution here!
     Greedy::compute(&instance, inttimelimit);
+
+    // Compute local search here!
+    LocalSearch::compute(&instance);
 
     // Write solution to file
     writeSolution();
