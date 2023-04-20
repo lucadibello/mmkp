@@ -7,6 +7,7 @@
 #include "src/localSearch/LocalSearch.h"
 #include <cstdlib>
 #include <csignal>
+#include <thread>
 
 static Data instance;
 static std::string output;
