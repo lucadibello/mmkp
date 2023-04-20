@@ -57,34 +57,31 @@ std::vector<int> LocalSearch::computeNeighborhood(Data *instance) {
     if(firstTargetClass == secondTargetClass)
         secondTargetClass = (firstTargetClass + 1) % instance->nclasses;
 
-    // Items for the first target class
-    int itemsFirstClass = instance->nitems[firstTargetClass];
+    // Pick random items for the two target classes
+    int itemFirstClass = rand() % instance->nitems[firstTargetClass];
+    int itemSecondClass = rand() % instance->nitems[secondTargetClass];
 
-    for (int i = 0; i < itemsFirstClass; i++) {
-        // Skip item if it's already in the solution
-        if (i == instance->solution[firstTargetClass])
-            continue;
+    std::vector<int> neighborhoodCapacities = instance->capacities;
+    // Update capacities
+    for (int j = 0; j < instance->nresources; j++) {
+        neighborhoodCapacities[j] -= instance->weights[firstTargetClass][itemFirstClass * instance->nresources + j];
+        neighborhoodCapacities[j] += instance->weights[firstTargetClass][instance->solution[firstTargetClass] * instance->nresources + j];
+        neighborhoodCapacities[j] -= instance->weights[secondTargetClass][itemSecondClass * instance->nresources + j];
+        neighborhoodCapacities[j] += instance->weights[secondTargetClass][instance->solution[secondTargetClass] * instance->nresources + j];
+    }
+    // Check if neighborhood is feasible
+    bool feasible = true;
+    for (long unsigned int c = 0; c < neighborhoodCapacities.size(); c++) {
+        if (neighborhoodCapacities[c] < 0)
+            feasible = false;
+    }
 
-        std::vector<int> neighborhoodCapacities = instance->capacities;
-        // Update capacities
-        for (int j = 0; j < instance->nresources; j++) {
-            neighborhoodCapacities[j] -= instance->weights[firstTargetClass][i * instance->nresources + j];
-            neighborhoodCapacities[j] += instance->weights[firstTargetClass][
-                    instance->solution[firstTargetClass] * instance->nresources + j];
-        }
-        // Check if neighborhood is feasible
-        bool feasible = true;
-        for (long unsigned int c = 0; c < neighborhoodCapacities.size(); c++) {
-            if (neighborhoodCapacities[c] < 0)
-                feasible = false;
-        }
-
-        // Update neighborhood
-        if (feasible) {
-            if (instance->values[firstTargetClass][i] > instance->values[firstTargetClass][instance->solution[firstTargetClass]]) {
-                neighborhood[firstTargetClass] = i;
-                break;
-            }
+    // Update neighborhood
+    if (feasible) {
+        if (instance->values[firstTargetClass][itemFirstClass] + instance->values[secondTargetClass][itemSecondClass] >
+                instance->values[firstTargetClass][instance->solution[firstTargetClass]] + instance->values[secondTargetClass][instance->solution[secondTargetClass]]) {
+            neighborhood[firstTargetClass] = itemFirstClass;
+            neighborhood[secondTargetClass] = itemSecondClass;
         }
     }
 
