@@ -48,6 +48,6 @@ echo "$real_time" > "$csv_file_dir/$csv_file_name.time"
 # Check for verbose flag
 if [ "$2" = "-v" ]; then
     # Print the output
-    echo "$output" | tail -n 2 | head -n 1
+    echo "$output"
     echo "Total time: $real_time seconds"
 fi
