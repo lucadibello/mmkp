@@ -49,19 +49,28 @@ else
   percentage_difference=$(echo "scale=2; ($result - $optimal_value) * 100 / $optimal_value" | bc -l)
 fi
 
+# Create solution file csv
+if [ ! -f "solutions.csv" ]; then
+    touch "solutions.csv"
+    echo "filename,computed value,optimal value,percentage difference" >> "solutions.csv"
+fi
 
 # If the result != -1 then the solution is correct
 if [ "$result" != "-1" ]; then
     # If the optimal value has been found, print the percentage difference
     if [ "$foundOptimalValue" -eq 1 ]; then
         echo "[$1] Solution is correct! The computed value is $result/$optimal_value ($percentage_difference%)"
+        echo "$(basename "$1"),$result,$optimal_value,$percentage_difference" >> "solutions.csv"
     else
         echo "[$1] Solution is correct! The computed value is $result (optimal value not found...)"
+        echo "$(basename "$1"),$result,," >> "solutions.csv"
     fi
 else
     if [ "$foundOptimalValue" -eq 1 ]; then
         echo "[$1] Solution is not feasible! The solution would be $optimal_value..."
+        echo "$(basename "$1"),,," >> "solutions.csv"
     else
         echo "[$1] Solution is not feasible!"
+        echo "$(basename "$1"),,," >> "solutions.csv"
     fi
 fi
