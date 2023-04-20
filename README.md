@@ -27,6 +27,8 @@ N classes definition follow:
 
 ## Scripts
 
+Notice: Be careful, you have to build `mmkp` and `verifier` before running the scripts and the resultants executables must be in the default directory `./cmake-build-debug/`.
+
 ### Start MMKP
 
 `start-mmkp` is a script that runs the algorithm for a single instance and saves the results in a file named `<instance_name>.txt.out`. The script creates also a file named `<instance_name>.txt.time` with the time spent to compute the solution.
