@@ -54,7 +54,6 @@ void signalHandler(int signum)
 
 int main(int argc, char *argv[])
 {
-
     // register signal SIGINT and signal handler
     signal(SIGINT, signalHandler);
 

@@ -6,6 +6,7 @@
 
 void LocalSearch::compute(Data * instance) {
     std::cout << "----------------- Local search solution -----------------" << std::endl;
+    srand(time(nullptr));
 
     for(long unsigned int i = 0; i < instance->capacities.size(); i ++) {
         std::cout << instance->capacities[i] << "_";
@@ -50,25 +51,42 @@ void LocalSearch::compute(Data * instance) {
 
 int LocalSearch::m_iterations = 0;
 bool LocalSearch::stopCondition() {
-    return m_iterations ++ > 1000;
+    return false;
 }
 
 std::vector<int> LocalSearch::computeNeighborhood(Data* instance) {
     std::vector<int> neighborhood = instance->solution;
-    int targetClass = m_iterations % instance->nclasses;
+    int targetClass = rand() % instance->nclasses;
 
     // Items for the target class
     int items = instance->nitems[targetClass];
 
-    int max = instance->values[targetClass][0];
-    int maxIndex = 0;
-    for(int i = 1; i < items; i++) {
-        if(instance->values[targetClass][i] > max) {
-            max = instance->values[targetClass][i];
-            maxIndex = i;
+    for(int i = 0; i < items; i ++) {
+        // Skip item if it's already in the solution
+        if(i == instance->solution[targetClass])
+            continue;
+
+        // Check if neighborhood is feasible
+        std::vector<int> neighborhoodCapacities = instance->capacities;
+        // Update capacities
+        for (int j = 0; j < instance->nresources; j++) {
+            neighborhoodCapacities[j] -= instance->weights[targetClass][i * instance->nresources + j];
+            neighborhoodCapacities[j] += instance->weights[targetClass][instance->solution[targetClass] * instance->nresources + j];
+        }
+        bool feasible = true;
+        for (long unsigned int c = 0; c < neighborhoodCapacities.size(); c++) {
+            if(neighborhoodCapacities[c] < 0)
+                feasible = false;
+        }
+
+        // Update neighborhood
+        if(feasible) {
+            if(instance->values[targetClass][i] > instance->values[targetClass][instance->solution[targetClass]]) {
+                neighborhood[targetClass] = i;
+                break;
+            }
         }
     }
 
-    neighborhood[targetClass] = maxIndex;
     return neighborhood;
 }
