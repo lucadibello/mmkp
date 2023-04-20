@@ -15,7 +15,7 @@ endif()
 add_executable(converter
         src/data.cpp
         src/data.h
-        src/converter/DataConverter.cpp src/localSearch/LocalSearch.h src/localSearch/LocalSearch.cpp)
+        src/converter/DataConverter.cpp src/localSearch/LocalSearch.h src/localSearch/LocalSearch.cpp src/metaheuristic/Metaheuristic.cpp src/metaheuristic/Metaheuristic.h)
 
 add_executable(verifier
         verifier/main.cpp verifier/data.cpp verifier/data.h)
