@@ -16,11 +16,10 @@ void LocalSearch::compute(Data *instance) {
     while (!stopCondition()) {
         std::vector<int> neighborhood = computeNeighborhood(instance);
 
-        // Check if neighborhood is feasible
+        // Update capacities
         std::vector<int> neighborhoodCapacities = instance->capacities;
         for (long unsigned int i = 0; i < neighborhood.size(); i++) {
             if (neighborhood[i] != instance->solution[i]) {
-                // Update capacities
                 for (int j = 0; j < instance->nresources; j++) {
                     neighborhoodCapacities[j] -= instance->weights[i][neighborhood[i] * instance->nresources + j];
                     neighborhoodCapacities[j] += instance->weights[i][instance->solution[i] * instance->nresources + j];
@@ -51,22 +50,27 @@ bool LocalSearch::stopCondition() {
 
 std::vector<int> LocalSearch::computeNeighborhood(Data *instance) {
     std::vector<int> neighborhood = instance->solution;
-    int targetClass = rand() % instance->nclasses;
 
-    // Items for the target class
-    int items = instance->nitems[targetClass];
+    // Choose two different target classes
+    int firstTargetClass = rand() % instance->nclasses;
+    int secondTargetClass = rand() % instance->nclasses;
+    if(firstTargetClass == secondTargetClass)
+        secondTargetClass = (firstTargetClass + 1) % instance->nclasses;
 
-    for (int i = 0; i < items; i++) {
+    // Items for the first target class
+    int itemsFirstClass = instance->nitems[firstTargetClass];
+
+    for (int i = 0; i < itemsFirstClass; i++) {
         // Skip item if it's already in the solution
-        if (i == instance->solution[targetClass])
+        if (i == instance->solution[firstTargetClass])
             continue;
 
         std::vector<int> neighborhoodCapacities = instance->capacities;
         // Update capacities
         for (int j = 0; j < instance->nresources; j++) {
-            neighborhoodCapacities[j] -= instance->weights[targetClass][i * instance->nresources + j];
-            neighborhoodCapacities[j] += instance->weights[targetClass][
-                    instance->solution[targetClass] * instance->nresources + j];
+            neighborhoodCapacities[j] -= instance->weights[firstTargetClass][i * instance->nresources + j];
+            neighborhoodCapacities[j] += instance->weights[firstTargetClass][
+                    instance->solution[firstTargetClass] * instance->nresources + j];
         }
         // Check if neighborhood is feasible
         bool feasible = true;
@@ -77,8 +81,8 @@ std::vector<int> LocalSearch::computeNeighborhood(Data *instance) {
 
         // Update neighborhood
         if (feasible) {
-            if (instance->values[targetClass][i] > instance->values[targetClass][instance->solution[targetClass]]) {
-                neighborhood[targetClass] = i;
+            if (instance->values[firstTargetClass][i] > instance->values[firstTargetClass][instance->solution[firstTargetClass]]) {
+                neighborhood[firstTargetClass] = i;
                 break;
             }
         }
