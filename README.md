@@ -32,15 +32,17 @@ N classes definition follow:
 `start-mmkp` is a script that runs the algorithm for a single instance and saves the results in a file named `<instance_name>.txt.out`. The script creates also a file named `<instance_name>.txt.time` with the time spent to compute the solution.
 
 ```bash
-bash start-mmkp <instance>
+./start-mmkp.sh <instance> [-v]
 ```
+
+With the `-v` option the script prints the program output to the standard output, by default the output is redirected to avoid cluttering the terminal. 
 
 ### Start verifier
 
 `start-verifier` is a script that verifies the solution of a single instance. The script verifies that the solution is feasible and that has not exceeded the time limit (by default is 60s).
 
 ```bash
-bash start-verifier <instance>
+./start-verifier.sh <instance>
 ```
 
 ### Runner
@@ -52,6 +54,11 @@ This script embeds the `start-mmkp` and `start-verifier` scripts.
 ```bash
 bash runner.sh [--skip-compute] [--only-standard]
 ```
+
+With the `--skip-compute` option the script does not run the algorithm, it only verifies the results. With the `--only-standard` option the script runs the algorithm only for the standard instances, by default it runs the algorithm for both standard and large instances.
+In the other hand, with the `--skip-compute` option the script does not run the algorithm, it only verifies the results for the instances that have already been computed.
+
+If you combine the `--skip-compute` and `--only-standard` options, the script verifies the results for the standard instances only. 
 
 ## Research papers
 
