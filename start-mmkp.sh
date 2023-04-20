@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 # Accepts an argument that specifies the path of the csv file to be used
 # If no argument is provided, notify the user
