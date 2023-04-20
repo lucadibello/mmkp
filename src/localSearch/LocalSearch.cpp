@@ -45,6 +45,7 @@ void LocalSearch::compute(Data *instance) {
 int LocalSearch::m_iterations = 0;
 
 bool LocalSearch::stopCondition() {
+    // Might change in the future
     return m_iterations++ > 20000;
 }
 
@@ -76,13 +77,12 @@ std::vector<int> LocalSearch::computeNeighborhood(Data *instance) {
             feasible = false;
     }
 
-    // Update neighborhood
-    if (feasible) {
-        if (instance->values[firstTargetClass][itemFirstClass] + instance->values[secondTargetClass][itemSecondClass] >
+    // Update neighborhood is solution is sidible AND better
+    if (feasible &&
+                instance->values[firstTargetClass][itemFirstClass] + instance->values[secondTargetClass][itemSecondClass] >
                 instance->values[firstTargetClass][instance->solution[firstTargetClass]] + instance->values[secondTargetClass][instance->solution[secondTargetClass]]) {
             neighborhood[firstTargetClass] = itemFirstClass;
             neighborhood[secondTargetClass] = itemSecondClass;
-        }
     }
 
     return neighborhood;
