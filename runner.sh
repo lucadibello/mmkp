@@ -1,7 +1,21 @@
 #!/bin/bash
 
+# Check if first argument is provided
+# If not, notify the user
+if [ $# -eq 0 ]; then
+    echo "[!] Please provide the time limit in seconds!"
+    exit 1
+fi
+
+# Check if the first argument is a number
+# If not, notify the user
+if ! [[ "$1" =~ ^[0-9]+$ ]]; then
+    echo "[!] Time limit must be a number!"
+    exit 1
+fi
+
 # Check if used passed the --skip-compute flag
-if [ "$1" = "--skip-compute" ]; then
+if [ "$2" = "--skip-compute" ]; then
     echo "[!] Skipping MMKP computation"
     skip_compute=true
 else
@@ -10,7 +24,7 @@ else
 fi
 
 # Check if used passed the --only-standard flag
-if [ "$1" = "--only-standard" ]; then
+if [ "$2" = "--only-standard" ]; then
     echo "[!] Running MMKP for standard files only"
     only_standard=true
 else
@@ -31,7 +45,7 @@ if [ "$skip_compute" = false ]; then
 
     if [ "$only_standard" = false ]; then
         for file in data/large/*.txt; do
-            ./start-mmkp.sh "$file"
+            ./start-mmkp.sh "$file" "$1" 1>/dev/null
 
             # Print OK if the file is done
             echo "[OK] $file"
@@ -40,7 +54,7 @@ if [ "$skip_compute" = false ]; then
 
     echo "[!] Running MMKP for standard files..."
     for file in data/standard/*.txt; do
-        ./start-mmkp.sh "$file"
+        ./start-mmkp.sh "$file" "$1" 1>/dev/null
 
         # Print OK if the file is done
         echo "[OK] $file"

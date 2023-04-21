@@ -46,7 +46,7 @@ int LocalSearch::m_iterations = 0;
 
 bool LocalSearch::stopCondition() {
     // Might change in the future
-    return m_iterations++ > 20000;
+    return false;
 }
 
 std::vector<int> LocalSearch::computeNeighborhood(Data *instance) {
