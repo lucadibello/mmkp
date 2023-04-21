@@ -34,7 +34,7 @@ Notice: Be careful, you have to build `mmkp` and `verifier` before running the s
 `start-mmkp` is a script that runs the algorithm for a single instance and saves the results in a file named `<instance_name>.txt.out`. The script creates also a file named `<instance_name>.txt.time` with the time spent to compute the solution.
 
 ```bash
-./start-mmkp.sh <instance> [-v]
+./start-mmkp.sh <instance> <seconds> [-v]
 ```
 
 With the `-v` option the script prints the program output to the standard output, by default the output is redirected to avoid cluttering the terminal. 
@@ -54,7 +54,7 @@ With the `-v` option the script prints the program output to the standard output
 This script embeds the `start-mmkp` and `start-verifier` scripts.
 
 ```bash
-bash runner.sh [--skip-compute] [--only-standard]
+bash runner.sh <seconds> [--skip-compute] [--only-standard]
 ```
 
 With the `--skip-compute` option the script does not run the algorithm, it only verifies the results. With the `--only-standard` option the script runs the algorithm only for the standard instances, by default it runs the algorithm for both standard and large instances.
