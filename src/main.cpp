@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
     Greedy::compute(&instance, inttimelimit);
 
     // Compute local search here!
-    Metaheuristic::compute(&instance);
+    Metaheuristic::compute(&instance, inttimelimit);
 
     // Write solution to file
     writeSolution();
