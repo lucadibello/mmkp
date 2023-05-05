@@ -40,6 +40,6 @@ void Metaheuristic::compute(Data *instance, unsigned int kAnts) {
 
 
 bool Metaheuristic::stopCondition() {
-    return ++m_iterations >= 100;
+    return ++m_iterations >= 50;
 }
 
