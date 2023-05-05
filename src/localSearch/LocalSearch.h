@@ -12,6 +12,8 @@ class LocalSearch {
 public:
     static void compute(Data * instance);
 
+    static std::vector<int> computeNeighborhood(Data* instance);
+
 private:
     static bool stopCondition();
     static std::vector<int> computeNeighbour(Data* instance);
