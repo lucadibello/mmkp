@@ -26,14 +26,6 @@ inline bool exists(const std::string &name)
 
 void writeSolution()
 {
-    int total_value = 0;
-    for (auto i = 0; i < instance.nclasses; i++)
-    {
-        const int itemValue = instance.values[i][instance.solution[i]];
-        total_value += itemValue;
-    }
-    std::cout << "Total value: " << total_value << std::endl;
-
     std::ofstream outfile;
     outfile.open(output, std::ios_base::out);
     for (auto i = 0; i < instance.nclasses; i++)
@@ -54,7 +46,6 @@ void signalHandler(int signum)
 
 int main(int argc, char *argv[])
 {
-
     // register signal SIGINT and signal handler
     signal(SIGINT, signalHandler);
 

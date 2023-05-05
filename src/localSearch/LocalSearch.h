@@ -12,11 +12,9 @@ class LocalSearch {
 public:
     static void compute(Data * instance);
 
-    static std::vector<int> computeNeighborhood(Data* instance);
-
 private:
-    static int m_iterations;
     static bool stopCondition();
+    static std::vector<int> computeNeighbour(Data* instance);
 };
 
 #endif //MMKP_LOCALSEARCH_H

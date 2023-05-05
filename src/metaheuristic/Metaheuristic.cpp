@@ -5,23 +5,13 @@
 #include "Metaheuristic.h"
 
 /**
- * Pheromone maximum value.
- */
-const unsigned int Metaheuristic::m_tMax = 1000;
-
-/**
- * Pheromone minimum value.
- */
-const unsigned int Metaheuristic::m_tMin = 0;
-
-/**
  * Initialize the iteration counter.
  */
 unsigned int Metaheuristic::m_iterations = 0;
 
 /**
  * Metaheuristic solver based on the Random Ant Colony Optimization (R-Ant) algorithm using a Max-Min Ant System (MMAS) strategy.
- * @param instance
+ * @param instance The instance to solve.
  */
 void Metaheuristic::compute(Data *instance, unsigned int kAnts) {
     // Initialize the pheromone trails to the maximum value
