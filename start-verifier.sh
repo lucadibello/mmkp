@@ -15,7 +15,7 @@ fi
 
 # Ensure that there is a $1.out file
 if [ ! -f "$1.out" ]; then
-    echo "[!] Output file does not exist. You have to generate a proper solution first!"
+    echo "[$1] Output file does not exist. You have to generate a proper solution first!"
     exit 1
 fi
 

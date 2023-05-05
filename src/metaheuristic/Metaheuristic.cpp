@@ -5,7 +5,7 @@
 #include "Metaheuristic.h"
 #include <iostream>
 #include <random>
-#include <math.h>
+#include <cmath>
 
 /**
  * Pheromone maximum value.
@@ -27,17 +27,30 @@ unsigned int Metaheuristic::m_iterations = 0;
  *
  * Used to compute the probability of accepting a worse solution.
  */
-double Metaheuristic::m_temperature = 1000000;
+double Metaheuristic::m_temperature = 4321;
 
 /**
  * Metaheuristic solver based Simulated Annealing.
  * @param instance The instance to solve.
  */
-void Metaheuristic::compute(Data *instance) {
+void Metaheuristic::compute(Data *instance, int timelimit) {
     // Configure random for simulated annealing
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<> dis(0, 1);
+
+    // If beast mode (< 1), set the decrease rate to a lower value
+    double decreaseRate;
+    if (timelimit <= 1) {
+        decreaseRate = 0.99;
+    } else if (timelimit <= 10) {
+        decreaseRate = 0.9999;
+    } else if (timelimit <= 60) {
+        decreaseRate = 0.999999;
+    } else {
+        decreaseRate = 0.99999999;
+    }
+
 
     // Compute current solution value
     long totalValue = computeTotalValue(instance->solution, instance);
@@ -66,7 +79,6 @@ void Metaheuristic::compute(Data *instance) {
 
         // If same solution generated (no feasible neighbor has been found), continue
         if (isSame) {
-            std::cout << "[!] Generated neighbor is not feasible, continuing..." << std::endl;
             continue;
         }
 
@@ -83,8 +95,10 @@ void Metaheuristic::compute(Data *instance) {
             std::cout << "Rejecting worse solution with delta " << delta << std::endl;
 
             // If the neighbor is worse than the current solution, move to it with a probability
-            double probability = exp((-1 * delta) / m_temperature);
+            double probability = exp(delta / m_temperature);
             double random = dis(gen);
+
+            std::cout << "Probability: " << probability << std::endl;
 
             if (probability > random) {
                 std::cout << "Accepting worse solution with probability " << probability << " and random " << random << "(delta=" << delta << ", temperature=" << m_temperature << ")" << std::endl;
@@ -94,7 +108,7 @@ void Metaheuristic::compute(Data *instance) {
             }
 
             // Update temperature
-            m_temperature *= 0.9999;
+            m_temperature *= decreaseRate;
         }
 
         std::cout << "Current solution value: " << totalValue << std::endl;
@@ -153,9 +167,7 @@ bool Metaheuristic::stopCondition() {
 long Metaheuristic::computeTotalValue(std::vector<int> solution, Data *instance) {
     long totalValue = 0;
     for (int i = 0; i < instance->nclasses; i++) {
-        for (int j = 0; j < instance->nitems[i]; j++) {
-            totalValue += instance->values[i][solution[i]];
-        }
+        totalValue += instance->values[i][solution[i]];
     }
     return totalValue;
 }

@@ -10,7 +10,7 @@
 
 class Metaheuristic {
 public:
-    static void compute(Data * instance);
+    static void compute(Data * instance, int timelimit);
 
 private:
     const static unsigned int m_tMax;
