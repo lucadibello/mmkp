@@ -10,13 +10,16 @@
 
 class Metaheuristic {
 public:
-    static void compute(Data * instance, unsigned int kAnts);
+    static void compute(Data * instance);
 
 private:
     const static unsigned int m_tMax;
     const static unsigned int m_tMin;
     static unsigned int m_iterations;
     static bool stopCondition();
+    static long computeTotalValue(std::vector<int> solution, Data *instance);
+    static double m_temperature;
+    static std::vector<int> computeNeighbour(Data *instance);
 };
 
 
