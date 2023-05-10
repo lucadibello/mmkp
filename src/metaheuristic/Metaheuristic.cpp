@@ -8,43 +8,43 @@
 #include <cmath>
 
 /**
- * Initialize the iteration counter.
- */
-unsigned int Metaheuristic::m_iterations = 0;
-
-/**
  * Simulated Annealing temperature.
  *
  * Used to compute the probability of accepting a worse solution.
  */
-double Metaheuristic::m_temperature = 4321;
+double Metaheuristic::m_temperature = 100;
 
 /**
  * Metaheuristic solver based Simulated Annealing.
- * @param instance The instance to solve.
+ * @param originalInstance The instance to solve.
  */
-void Metaheuristic::compute(Data *instance, int timelimit) {
+void Metaheuristic::compute(Data *originalInstance, int timelimit) {
     // Configure random for simulated annealing
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<> dis(0, 1);
 
+    std::cout << "Starting simulated annealing with timelimit " << timelimit << std::endl;
+
     // If beast mode (< 1), set the decrease rate to a lower value
     double decreaseRate;
     if (timelimit <= 1) {
-        decreaseRate = 0.99;
+        decreaseRate = 0.9;
     } else if (timelimit <= 10) {
-        decreaseRate = 0.9999;
+        decreaseRate = 0.99;
     } else if (timelimit <= 60) {
-        decreaseRate = 0.999999;
+        decreaseRate = 0.999;
     } else {
-        decreaseRate = 0.99999999;
+        decreaseRate = 0.9999;
     }
 
-
     // Compute current solution value
-    long totalValue = computeTotalValue(instance->solution, instance);
+    long totalValue = computeTotalValue(originalInstance->solution, originalInstance);
+    long optimalValue = totalValue;
     std::cout << "Initial solution value: " << totalValue << std::endl;
+
+    // Create a temporary instance to store the local solution
+    Data *instance = originalInstance->copy();
 
     // Start the iterations
     while(!stopCondition()) {
@@ -59,7 +59,6 @@ void Metaheuristic::compute(Data *instance, int timelimit) {
             if (neighbour[i] != instance->solution[i]) {
                 // Update same flag
                 isSame = false;
-
                 for (int j = 0; j < instance->nresources; j++) {
                     neighborCapacities[j] -= instance->weights[i][neighbour[i] * instance->nresources + j];
                     neighborCapacities[j] += instance->weights[i][instance->solution[i] * instance->nresources + j];
@@ -81,17 +80,26 @@ void Metaheuristic::compute(Data *instance, int timelimit) {
             instance->solution = neighbour;
             instance->capacities = neighborCapacities;
             totalValue = neighborValue;
+
+            // Check if found solution is also an optimal solution
+            if (totalValue > optimalValue) {
+                optimalValue = totalValue;
+
+                // Save solution to instance
+                originalInstance->solution = neighbour;
+                std::cout << "Found new optimal solution with value " << optimalValue << std::endl;
+            } else {
+                std::cout << "--- accepting better solution with delta " << delta << std::endl;
+            }
         } else {
-            std::cout << "Rejecting worse solution with delta " << delta << std::endl;
+            // std::cout << "Rejecting worse solution with delta " << delta << std::endl;
 
             // If the neighbor is worse than the current solution, move to it with a probability
             double probability = exp(delta / m_temperature);
             double random = dis(gen);
 
-            std::cout << "Probability: " << probability << std::endl;
-
             if (probability > random) {
-                std::cout << "Accepting worse solution with probability " << probability << " and random " << random << "(delta=" << delta << ", temperature=" << m_temperature << ")" << std::endl;
+                std::cout << "--- accepting worse solution with probability " << probability << " and random " << random << "(delta=" << delta << ", temperature=" << m_temperature << ")" << std::endl;
                 instance->solution = neighbour;
                 instance->capacities = neighborCapacities;
                 totalValue = neighborValue;
@@ -101,7 +109,7 @@ void Metaheuristic::compute(Data *instance, int timelimit) {
             m_temperature *= decreaseRate;
         }
 
-        std::cout << "Current solution value: " << totalValue << std::endl;
+        // std::cout << "Current solution value: " << totalValue << std::endl;
     }
 }
 
@@ -117,7 +125,7 @@ std::vector<int> Metaheuristic::computeNeighbour(Data *instance) {
     // Choose two different target classes
     int firstTargetClass = rand() % instance->nclasses;
     int secondTargetClass = rand() % instance->nclasses;
-    if(firstTargetClass == secondTargetClass)
+    if (firstTargetClass == secondTargetClass)
         secondTargetClass = (firstTargetClass + 1) % instance->nclasses;
 
     // Pick random items for the two target classes
