@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <utility>
 
 using namespace std;
 
@@ -132,4 +133,18 @@ int Data::verify_solution(double *val) {
     *val = tmpval;
     cout << "Feasible, value " << tmpval << endl << endl;
     return 0;
+}
+
+Data *Data::copy() {
+    // Create a new Data object and copy all the data (deep copy) from the current object
+    Data *newdata = new Data();
+    newdata->nclasses = nclasses;
+    newdata->nresources = nresources;
+    newdata->capacities = capacities;
+    newdata->nitems = nitems;
+    newdata->values = values;
+    newdata->weights = weights;
+    newdata->solution = solution;
+    newdata->ptime = ptime;
+    return newdata;
 }

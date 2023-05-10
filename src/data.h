@@ -6,7 +6,6 @@
 class Data
 {
 public:
-
     int nclasses;
     int nresources;
     std::vector<int> capacities;
@@ -20,6 +19,7 @@ public:
     int read_output(const std::string& instance);
     int read_time(const std::string& instance);
     int verify_solution(double* val);
+    Data* copy();
 };
 
 #endif
