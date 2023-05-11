@@ -12,30 +12,31 @@
  *
  * Used to compute the probability of accepting a worse solution.
  */
-double Metaheuristic::m_temperature = 100;
+double Metaheuristic::m_temperature = 600;
 
 /**
  * Metaheuristic solver based Simulated Annealing.
  * @param originalInstance The instance to solve.
  */
-void Metaheuristic::compute(Data *originalInstance, int timelimit) {
+[[noreturn]] void Metaheuristic::compute(Data *originalInstance, int timelimit) {
     // Configure random for simulated annealing
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<> dis(0, 1);
+    std::uniform_int_distribution<> disInt(0, originalInstance->nclasses - 1);
 
     std::cout << "Starting simulated annealing with timelimit " << timelimit << std::endl;
 
-    // If beast mode (< 1), set the decrease rate to a lower value
+    // Lower time = higher decrease rate
     double decreaseRate;
     if (timelimit <= 1) {
-        decreaseRate = 0.9;
-    } else if (timelimit <= 10) {
         decreaseRate = 0.99;
-    } else if (timelimit <= 60) {
+    } else if (timelimit <= 10) {
         decreaseRate = 0.999;
-    } else {
+    } else if (timelimit <= 60) {
         decreaseRate = 0.9999;
+    } else {
+        decreaseRate = 0.99999;
     }
 
     // Compute current solution value
@@ -47,9 +48,9 @@ void Metaheuristic::compute(Data *originalInstance, int timelimit) {
     Data *instance = originalInstance->copy();
 
     // Start the iterations
-    while(!stopCondition()) {
+    while(true) {
         // Generate a neighbor from the initial solution
-        std::vector<int> neighbour = Metaheuristic::computeNeighbour(instance);
+        std::vector<int> neighbour = Metaheuristic::computeNeighbour(instance, disInt);
 
         // Update capacities
         std::vector<int> neighborCapacities = instance->capacities;
@@ -92,8 +93,6 @@ void Metaheuristic::compute(Data *originalInstance, int timelimit) {
                 std::cout << "--- accepting better solution with delta " << delta << std::endl;
             }
         } else {
-            // std::cout << "Rejecting worse solution with delta " << delta << std::endl;
-
             // If the neighbor is worse than the current solution, move to it with a probability
             double probability = exp(delta / m_temperature);
             double random = dis(gen);
@@ -109,31 +108,45 @@ void Metaheuristic::compute(Data *originalInstance, int timelimit) {
             m_temperature *= decreaseRate;
         }
 
-        // std::cout << "Current solution value: " << totalValue << std::endl;
+        // Print current solution vs optimal solution
+        std::cout << "Current solution value: " << totalValue << " (optimal: " << optimalValue << ")" << std::endl;
     }
 }
 
-/**
- * Compute a neighbour of the current solution
- * @param instance The instance of the Multi-Objective Multi-Dimensional Knapsack Problem
- * @return A std::vector<int> containing the new solution
- */
-std::vector<int> Metaheuristic::computeNeighbour(Data *instance) {
+long Metaheuristic::computeTotalValue(std::vector<int> solution, Data *instance) {
+    long totalValue = 0;
+    for (int i = 0; i < instance->nclasses; i++) {
+        totalValue += instance->values[i][solution[i]];
+    }
+    return totalValue;
+}
+
+std::vector<int> Metaheuristic::computeNeighbour(Data *instance, std::uniform_int_distribution<> classDistribution) {
+    // Create two generators for the two target classes
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
     // Copy current solution
     std::vector<int> neighbour = instance->solution;
 
     // Choose two different target classes
-    int firstTargetClass = rand() % instance->nclasses;
-    int secondTargetClass = rand() % instance->nclasses;
-    if (firstTargetClass == secondTargetClass)
-        secondTargetClass = (firstTargetClass + 1) % instance->nclasses;
+    int firstTargetClass;
+    int secondTargetClass;
+    do {
+        firstTargetClass = classDistribution(gen);
+        secondTargetClass = classDistribution(gen);
+    } while (firstTargetClass == secondTargetClass);
+
+    // Create a distribution for the items of the first target class
+    std::uniform_int_distribution<> itemDistribution(0, instance->nitems[firstTargetClass] - 1);
+    std::uniform_int_distribution<> itemDistribution2(0, instance->nitems[secondTargetClass] - 1);
 
     // Pick random items for the two target classes
-    int itemFirstClass = rand() % instance->nitems[firstTargetClass];
-    int itemSecondClass = rand() % instance->nitems[secondTargetClass];
+    int itemFirstClass = itemDistribution(gen);
+    int itemSecondClass = itemDistribution2(gen);
 
-    std::vector<int> neighbourCapacities = instance->capacities;
     // Update capacities
+    std::vector<int> neighbourCapacities = instance->capacities;
     for (int j = 0; j < instance->nresources; j++) {
         neighbourCapacities[j] -= instance->weights[firstTargetClass][itemFirstClass * instance->nresources + j];
         neighbourCapacities[j] += instance->weights[firstTargetClass][instance->solution[firstTargetClass] * instance->nresources + j];
@@ -148,25 +161,12 @@ std::vector<int> Metaheuristic::computeNeighbour(Data *instance) {
             feasible = false;
     }
 
-    // Update neighbour if feasible
+    // Update neighbour if feasible, otherwise return the current solution
     if (feasible) {
         neighbour[firstTargetClass] = itemFirstClass;
         neighbour[secondTargetClass] = itemSecondClass;
     }
 
     return neighbour;
-}
-
-
-bool Metaheuristic::stopCondition() {
-    return false;
-}
-
-long Metaheuristic::computeTotalValue(std::vector<int> solution, Data *instance) {
-    long totalValue = 0;
-    for (int i = 0; i < instance->nclasses; i++) {
-        totalValue += instance->values[i][solution[i]];
-    }
-    return totalValue;
 }
 

@@ -6,20 +6,17 @@
 #define MMKP_METAHEURISTIC_H
 
 
+#include <random>
 #include "src/data.h"
 
 class Metaheuristic {
 public:
-    static void compute(Data * instance, int timelimit);
+    [[noreturn]] static void compute(Data * instance, int timelimit);
 
 private:
-    const static unsigned int m_tMax;
-    const static unsigned int m_tMin;
-    static unsigned int m_iterations;
-    static bool stopCondition();
     static long computeTotalValue(std::vector<int> solution, Data *instance);
     static double m_temperature;
-    static std::vector<int> computeNeighbour(Data *instance);
+    static std::vector<int> computeNeighbour(Data *instance, std::uniform_int_distribution<> disInt);
 };
 
 

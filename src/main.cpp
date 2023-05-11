@@ -72,7 +72,4 @@ int main(int argc, char *argv[])
 
     // Compute local search here!
     Metaheuristic::compute(&instance, inttimelimit);
-
-    // Write solution to file
-    writeSolution();
 }
