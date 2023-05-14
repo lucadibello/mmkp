@@ -25,8 +25,6 @@ double Metaheuristic::m_temperature = 600;
     std::uniform_real_distribution<> dis(0, 1);
     std::uniform_int_distribution<> disInt(0, originalInstance->nclasses - 1);
 
-    std::cout << "Starting simulated annealing with timelimit " << timelimit << std::endl;
-
     // Lower time = higher decrease rate
     double decreaseRate;
     if (timelimit <= 1) {
@@ -42,7 +40,6 @@ double Metaheuristic::m_temperature = 600;
     // Compute current solution value
     long totalValue = computeTotalValue(originalInstance->solution, originalInstance);
     long optimalValue = totalValue;
-    std::cout << "Initial solution value: " << totalValue << std::endl;
 
     // Create a temporary instance to store the local solution
     Data *instance = originalInstance->copy();
@@ -88,9 +85,6 @@ double Metaheuristic::m_temperature = 600;
 
                 // Save solution to instance
                 originalInstance->solution = neighbour;
-                std::cout << "Found new optimal solution with value " << optimalValue << std::endl;
-            } else {
-                std::cout << "--- accepting better solution with delta " << delta << std::endl;
             }
         } else {
             // If the neighbor is worse than the current solution, move to it with a probability
@@ -98,7 +92,6 @@ double Metaheuristic::m_temperature = 600;
             double random = dis(gen);
 
             if (probability > random) {
-                std::cout << "--- accepting worse solution with probability " << probability << " and random " << random << "(delta=" << delta << ", temperature=" << m_temperature << ")" << std::endl;
                 instance->solution = neighbour;
                 instance->capacities = neighborCapacities;
                 totalValue = neighborValue;
@@ -107,9 +100,6 @@ double Metaheuristic::m_temperature = 600;
             // Update temperature
             m_temperature *= decreaseRate;
         }
-
-        // Print current solution vs optimal solution
-        std::cout << "Current solution value: " << totalValue << " (optimal: " << optimalValue << ")" << std::endl;
     }
 }
 
