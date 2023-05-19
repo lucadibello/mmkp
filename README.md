@@ -1,22 +1,27 @@
 # MMKP - Multiple-Choice Multidimensional Knapsack Problem
 
-## Problem description
+This is an implementation of the Multiple-Choice Multidimensional Knapsack Problem using C++. The MMKP involves selecting items from a given set, where each item has multiple attributes or dimensions. The goal is to maximize the total value of the selected items while respecting the capacity constraints of the knapsack.
 
-Multiple-choice multidimensional knapsack problem implementation in C++.
+The problem can be defined as follows:
+
+- We are given a set of items, each with its own set of attributes or dimensions.
+- Each item has a value and a weight associated with it.
+- The knapsack has a limited capacity in terms of weight and possibly other constraints.
+- The goal is to select a subset of items that maximizes the total value while ensuring that the selected items do not exceed the knapsack's capacity.
 
 ## Mathematical representation
 
 ### Sets / Domains
 
-* $N$: Sets of items divided in
-* $J = (J_1, J_2, ..., J_n)$: $n$ disjoint classes
-* $C = (C^1, C^2, ..., C^m)$: Resource vector of size $m$ (constrained multidimensional capacity of the knapsack)
+- $N$: Sets of items divided in
+- $J = (J_1, J_2, ..., J_n)$: $n$ disjoint classes
+- $C = (C^1, C^2, ..., C^m)$: Resource vector of size $m$ (constrained multidimensional capacity of the knapsack)
 
 ### Data
 
-* $r_i = |J_i|$: Number of items in each class
-* $v_{i,j}$: Value of item $j \in \{1..r_i\}$ for class $i \in \{1..n\}$
-* $w^k_{i,j}$: Weight of item $j \in \{1..r_i\}$ for class $i \in \{1..n\}$, for the resource $k \in \{1..m\}$
+- $r_i = |J_i|$: Number of items in each class
+- $v_{i,j}$: Value of item $j \in \{1..r_i\}$ for class $i \in \{1..n\}$
+- $w^k_{i,j}$: Weight of item $j \in \{1..r_i\}$ for class $i \in \{1..n\}$, for the resource $k \in \{1..m\}$
 
 ### Mathematical model
 
@@ -43,12 +48,35 @@ VJ WJ1 WJ2 WJ3 .. WIJM
 
 Where:
 
-* $N$ = Number of classes
-* $M$ = Number of resources
-* $Q_m$ = Capacity of the m-th resource $\forall m \in \{1..M\}$
-* $I_n$ = Number of items on the n-th class $\forall n \in \{1..N\}$
-* $V_ij$ = Value of the item j on the i-th class $\forall i \in \{1..N\}, \forall j \in \{1..I_i\}$
-* $W_ijm$ = Weight of the item j on the i-th class for the m-th resource $\forall i \in \{1..N\}, \forall j \in \{1..I_i\}, \forall m \in \{1..M\}$
+- $N$ = Number of classes
+- $M$ = Number of resources
+- $Q_m$ = Capacity of the m-th resource $\forall m \in \{1..M\}$
+- $I_n$ = Number of items on the n-th class $\forall n \in \{1..N\}$
+- $V_ij$ = Value of the item j on the i-th class $\forall i \in \{1..N\}, \forall j \in \{1..I_i\}$
+- $W_ijm$ = Weight of the item j on the i-th class for the m-th resource $\forall i \in \{1..N\}, \forall j \in \{1..I_i\}, \forall m \in \{1..M\}$
+
+## Developed algorithms & solvers
+
+### AMPL solver (exact)
+
+We have developed an AMPL solver using [CPLEX](https://www.ibm.com/products/ilog-cplex-optimization-studio/cplex-optimizer) to provide an exact solution for the MMKP (Multiple-Choice Multidimensional Knapsack Problem). By formulating the problem as a mathematical model and utilizing the power of CPLEX, we can obtain the optimal solution. However, it is important to note that since the problem is NP-hard, computing the solution may take a considerable amount of time.
+
+For convenience, we have made the AMPL mathematical model available in the ./src/ampl directory, consisting of the mmkp.mod and mmkp.run files. These files contain the formulation of the problem and the instructions for running the solver. Additionally, to facilitate the process and eliminate the need to install AMPL, we have provided a Jupyter Notebook that allows you to execute the model and visualize the results directly.
+
+You can access the Jupyter Notebook by following this link: [MMKP.ipynb](./ampl/mmkp.ipynb)
+
+> Please note that the free CPLEX license provided by AMPL has a limitation of solving instances with up to 500 variables and constraints. If you are dealing with larger problem instances, it will be necessary to obtain a license by purchasing it from the appropriate sources.
+
+### Greedy algorithm (heuristic)
+
+The greedy algorithm starts with an empty knapsack and iteratively selects items based on their individual value-to-weight ratios. At each step, it selects the item with the highest ratio until the knapsack's capacity is reached. This approach provides a fast and reasonable solution, but it may not always yield the optimal solution.
+
+### Local search algorithm (heuristic)
+
+### Simulated annealing algorithm (metaheuristic)
+
+
+
 
 ## Academic papers
 
