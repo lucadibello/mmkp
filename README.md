@@ -151,9 +151,9 @@ The probability of accepting a worse solution is calculated using the following 
 $$
 \begin{align*}
     P & = e^{\frac{z_{new} - z_{opt}}{C}} \\
-    where \\
-    z_{new} & = new\ neighbor\ solution\ value \\
-    z_{opt} & = current\ optimal\ solution\ value
+    \textit{where} \\
+    z_{new} & = \text{new neighbor solution value} \\
+    z_{opt} & = \text{current optimal solution value}
 \end{align*}
 $$
 
