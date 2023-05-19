@@ -13,6 +13,10 @@
   - [3.2. Greedy algorithm (heuristic)](#32-greedy-algorithm-heuristic)
   - [3.3. Local search algorithm (heuristic)](#33-local-search-algorithm-heuristic)
   - [3.4. Simulated annealing algorithm (metaheuristic)](#34-simulated-annealing-algorithm-metaheuristic)
+- [Performance comparison](#performance-comparison)
+  - [Standard - 60 seconds](#standard---60-seconds)
+  - [Fast - 10 seconds](#fast---10-seconds)
+  - [Beast - 1 second](#beast---1-second)
 - [4. Testing instances](#4-testing-instances)
 - [5. Academic papers](#5-academic-papers)
 - [6. Utility scripts](#6-utility-scripts)
@@ -162,6 +166,60 @@ By incorporating simulated annealing as a metaheuristic, we mitigate the limitat
 It is worth noting that the effectiveness of the simulated annealing algorithm depends on appropriately setting the temperature and cooling rate parameters, which may require experimentation and adjustment for optimal performance.
 
 > Since the algorithm continues searching until a SIGINT signal is received, we strongly suggest running the algorithm using the script provided in [this section](#6-utility-scripts) to set a time limit.
+
+## Performance comparison
+
+The testing instances were run using the three algorithms (Greedy, Local Search, and Simulated Annealing) with three different time limits (1s, 10s, and 60s). The results are summarized in the following tables.
+
+> The following analysis is based on the results obtained by running the algorithms on a MacBook Mini M1 with 16GB of RAM and 8 CPU cores.
+
+### Standard - 60 seconds
+
+| Instance | Optimal | Greedy | Local Search | Simulated Annealing |
+| -------- | ------- | ------ | ------------ | ------------------- |
+| 1        | 0       | 0      | 0            | 0                   |
+| 2        | 0       | 0      | 0            | 0                   |
+| 3        | 0       | 0      | 0            | 0                   |
+| 4        | 0       | 0      | 0            | 0                   |
+| 5        | 0       | 0      | 0            | 0                   |
+| 6        | 0       | 0      | 0            | 0                   |
+| 7        | 0       | 0      | 0            | 0                   |
+| 8        | 0       | 0      | 0            | 0                   |
+| 9        | 0       | 0      | 0            | 0                   |
+| 10       | 0       | 0      | 0            | 0                   |
+| Mean delta % | 0.00% | 0.00% | 0.00% | 0.00% |
+### Fast - 10 seconds
+
+
+| Instance | Optimal | Greedy | Local Search | Simulated Annealing |
+| -------- | ------- | ------ | ------------ | ------------------- |
+| 1        | 0       | 0      | 0            | 0                   |
+| 2        | 0       | 0      | 0            | 0                   |
+| 3        | 0       | 0      | 0            | 0                   |
+| 4        | 0       | 0      | 0            | 0                   |
+| 5        | 0       | 0      | 0            | 0                   |
+| 6        | 0       | 0      | 0            | 0                   |
+| 7        | 0       | 0      | 0            | 0                   |
+| 8        | 0       | 0      | 0            | 0                   |
+| 9        | 0       | 0      | 0            | 0                   |
+| 10       | 0       | 0      | 0            | 0                   |
+| Mean delta % | 0.00% | 0.00% | 0.00% | 0.00% |
+
+### Beast - 1 second
+
+| Instance | Optimal | Greedy | Local Search | Simulated Annealing |
+| -------- | ------- | ------ | ------------ | ------------------- |
+| 1        | 0       | 0      | 0            | 0                   |
+| 2        | 0       | 0      | 0            | 0                   |
+| 3        | 0       | 0      | 0            | 0                   |
+| 4        | 0       | 0      | 0            | 0                   |
+| 5        | 0       | 0      | 0            | 0                   |
+| 6        | 0       | 0      | 0            | 0                   |
+| 7        | 0       | 0      | 0            | 0                   |
+| 8        | 0       | 0      | 0            | 0                   |
+| 9        | 0       | 0      | 0            | 0                   |
+| 10       | 0       | 0      | 0            | 0                   |
+| Mean delta % | 0.00% | 0.00% | 0.00% | 0.00% |
 
 ## 4. Testing instances
 
