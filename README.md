@@ -187,7 +187,7 @@ The testing instances were run using the three algorithms (Greedy, Local Search,
 | 8        | 0       | 0      | 0            | 0                   |
 | 9        | 0       | 0      | 0            | 0                   |
 | 10       | 0       | 0      | 0            | 0                   |
-| Mean delta % | 0.00% | 0.00% | 0.00% | 0.00% |
+| Mean delta % | - | 0.00% | 0.00% | 0.00% |
 ### Fast - 10 seconds
 
 
@@ -203,7 +203,7 @@ The testing instances were run using the three algorithms (Greedy, Local Search,
 | 8        | 0       | 0      | 0            | 0                   |
 | 9        | 0       | 0      | 0            | 0                   |
 | 10       | 0       | 0      | 0            | 0                   |
-| Mean delta % | 0.00% | 0.00% | 0.00% | 0.00% |
+| Mean delta % | - | 0.00% | 0.00% | 0.00% |
 
 ### Beast - 1 second
 
@@ -219,7 +219,7 @@ The testing instances were run using the three algorithms (Greedy, Local Search,
 | 8        | 0       | 0      | 0            | 0                   |
 | 9        | 0       | 0      | 0            | 0                   |
 | 10       | 0       | 0      | 0            | 0                   |
-| Mean delta % | 0.00% | 0.00% | 0.00% | 0.00% |
+| Mean delta % | - | 0.00% | 0.00% | 0.00% |
 
 ## 4. Testing instances
 
