@@ -19,6 +19,8 @@ The problem can be defined as follows:
 
 ### Data
 
+- $n$: Number of classes
+- $m$: Number of resources
 - $r_i = |J_i|$: Number of items in each class
 - $v_{i,j}$: Value of item $j \in \{1..r_i\}$ for class $i \in \{1..n\}$
 - $w^k_{i,j}$: Weight of item $j \in \{1..r_i\}$ for class $i \in \{1..n\}$, for the resource $k \in \{1..m\}$
