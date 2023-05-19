@@ -14,15 +14,9 @@
   - [3.3. Local search algorithm (heuristic)](#33-local-search-algorithm-heuristic)
   - [3.4. Simulated annealing algorithm (metaheuristic)](#34-simulated-annealing-algorithm-metaheuristic)
 - [4. Performance comparison](#4-performance-comparison)
-  - [4.1. Standard - 60 seconds](#41-standard---60-seconds)
-    - [4.1.1. Standard set](#411-standard-set)
-    - [4.1.2. Large set](#412-large-set)
-  - [4.2. Fast - 10 seconds](#42-fast---10-seconds)
-    - [4.2.1. Standard set](#421-standard-set)
-    - [4.2.2. Large set](#422-large-set)
-  - [4.3. Beast - 1 second](#43-beast---1-second)
-    - [4.3.1. Standard set](#431-standard-set)
-    - [4.3.2. Large set](#432-large-set)
+  - [4.1. Standard - 60 seconds limit](#41-standard---60-seconds-limit)
+  - [4.2. Fast - 10 seconds limit](#42-fast---10-seconds-limit)
+  - [4.3. Beast - 1 second limit](#43-beast---1-second-limit)
 - [5. Testing instances](#5-testing-instances)
 - [6. Academic papers](#6-academic-papers)
 - [7. Utility scripts](#7-utility-scripts)
@@ -63,7 +57,7 @@ The problem can be defined as follows:
 $$
 \begin{align*}
     z & = \min \sum_{i=1}^n \sum_{j=1}^{r_i} v_{i,j} * x_{i,j} \\
-    subject\ to & \sum_{i=1}^n \sum_{j=1}^{r_i} w^k_{i,j} * x_{i,j} \leq C^k & \forall k \in \{1..m\} \\
+    s.t. & \sum_{i=1}^n \sum_{j=1}^{r_i} w^k_{i,j} * x_{i,j} \leq C^k & \forall k \in \{1..m\} \\
     & \sum_{j=1}^{r_i} x_{i,j} = 1 & \forall i \in \{1..n\} \\
     & x_{i,j} \in \{0,1\}
 \end{align*}
@@ -179,107 +173,53 @@ To assess the performance of the algorithms (Greedy, Local Search, and Simulated
 
 > The following analysis is based on the results obtained by running the algorithms on a MacBook Mini M1 with 16GB of RAM and 8 CPU cores.
 
-### 4.1. Standard - 60 seconds
-
-#### 4.1.1. Standard set
+### 4.1. Standard - 60 seconds limit
 
 | Instance | Optimal | Greedy | Local Search | Simulated Annealing |
 | -------- | ------- | ------ | ------------ | ------------------- |
-| 1        | 0       | 0      | 0            | 0                   |
-| 2        | 0       | 0      | 0            | 0                   |
-| 3        | 0       | 0      | 0            | 0                   |
-| 4        | 0       | 0      | 0            | 0                   |
-| 5        | 0       | 0      | 0            | 0                   |
-| 6        | 0       | 0      | 0            | 0                   |
-| 7        | 0       | 0      | 0            | 0                   |
-| 8        | 0       | 0      | 0            | 0                   |
-| 9        | 0       | 0      | 0            | 0                   |
-| 10       | 0       | 0      | 0            | 0                   |
-| Mean delta % | - | 0.00% | 0.00% | 0.00% |
+| mmkp_a_09.txt        | 49147       | 30286 (-38.37%)      | 47687 (-2.97%)            | 47995 (-2.34%)                   |
+| mmkp_a_13.txt       | 98388       | 60113 (-38.90%)      | 95457 (-2.97%)            | 95806 (-2.62%)                   |
+| mmkp_b_07.txt        | 16410       | 12148 (-25.97%)      | 15690 (-4.38%)            | 15929 (-2.93%)                   |
+| mmkp_b_16.txt        | 42617       | 23909 (-43.89%)      | 41957 (-1.54%) | 42039 (-1.35%)                  |
+| mmkp_c_25.txt        | 44126       | 32196 (-27.03%)      | 41831 (-5.20%)            | 43329 (-1.80%)                  |
+| mmkp_c_26.txt        | 44440      | 31915 (-28.18%)      | 42623 (-4.08%)            | 43940 (-1.12%)                  |
+| mmkp_d_1.txt        | 25647       | 18792 (-26.72%)      | 24910 (-2.87%)            | 25027 (-2.41%)                  |
+| mmkp_d_205.txt        | 80488       | 70831 (-11.99%)      | 79722 (-.95%)            | 80218 (-.33%)                   |
+| mmkp_d_236.txt        | 352469       | 310517 (-11.90%)      | 349611 (-.81%)            | 350786 (-.47%)                   |
+| mmkp_d_98.txt       | 227576       | 175395 (-22.92%)      | 220762 (-2.99%)            | 221662 (-2.59%)                   |
+| **Mean delta %** | - | **-27.587%** | **-2.876%** | **-1.796%** |
 
-#### 4.1.2. Large set
-
-| Instance | Optimal | Greedy | Local Search | Simulated Annealing |
-| -------- | ------- | ------ | ------------ | ------------------- |
-| 1        | 0       | 0      | 0            | 0                   |
-| 2        | 0       | 0      | 0            | 0                   |
-| 3        | 0       | 0      | 0            | 0                   |
-| 4        | 0       | 0      | 0            | 0                   |
-| 5        | 0       | 0      | 0            | 0                   |
-| 6        | 0       | 0      | 0            | 0                   |
-| 7        | 0       | 0      | 0            | 0                   |
-| 8        | 0       | 0      | 0            | 0                   |
-| 9        | 0       | 0      | 0            | 0                   |
-| 10       | 0       | 0      | 0            | 0                   |
-| Mean delta % | - | 0.00% | 0.00% | 0.00% |
-
-### 4.2. Fast - 10 seconds
-
-#### 4.2.1. Standard set
+### 4.2. Fast - 10 seconds limit
 
 | Instance | Optimal | Greedy | Local Search | Simulated Annealing |
 | -------- | ------- | ------ | ------------ | ------------------- |
-| 1        | 0       | 0      | 0            | 0                   |
-| 2        | 0       | 0      | 0            | 0                   |
-| 3        | 0       | 0      | 0            | 0                   |
-| 4        | 0       | 0      | 0            | 0                   |
-| 5        | 0       | 0      | 0            | 0                   |
-| 6        | 0       | 0      | 0            | 0                   |
-| 7        | 0       | 0      | 0            | 0                   |
-| 8        | 0       | 0      | 0            | 0                   |
-| 9        | 0       | 0      | 0            | 0                   |
-| 10       | 0       | 0      | 0            | 0                   |
-| Mean delta % | - | 0.00% | 0.00% | 0.00% |
+| mmkp_a_09.txt        | 49147       | 30286 (-38.37%)      | 47919 (-2.49%)            | 47619 (-3.10%)                   |
+| mmkp_a_13.txt       | 98388       | 60113 (-38.90%)      | 94760 (-3.68%)            | 94963 (-3.48%)                   |
+| mmkp_b_07.txt        | 16410       | 12148 (-25.97%)      | 15809 (-3.66%)            | 15719 (-4.21%)                   |
+| mmkp_b_16.txt        | 42617       | 23909 (-43.89%)      | 41832 (-1.84%)            | 41796 (-1.92%)                  |
+| mmkp_c_25.txt        | 44126       | 32196 (-27.03%)      | 42521 (-3.63%)            | 43118 (-2.28%)                  |
+| mmkp_c_26.txt        | 44440      | 31915 (-28.18%)      | 42827 (-3.62%)            | 43596 (-1.89%)                  |
+| mmkp_d_1.txt        | 25647       | 18792 (-26.72%)      | 24735 (-3.55%)            | 24906 (-2.88%)                  |
+| mmkp_d_205.txt        | 80488       | 70831 (-11.99%)      | 80488 (0%)            | 80207 (-.34%)                   |
+| mmkp_d_236.txt        | 352469       | 310517 (-11.90%)      | 349457 (-.85%)            | 349982 (-.70%)                   |
+| mmkp_d_98.txt       | 227576       | 175395 (-22.92%)      | 220124 (-3.27%)            | 220219 (-3.23%)                   |
+| **Mean delta %** | - | **-27.587%** | **-2.659%** | **-2.403%** |
 
-#### 4.2.2. Large set
-
-| Instance | Optimal | Greedy | Local Search | Simulated Annealing |
-| -------- | ------- | ------ | ------------ | ------------------- |
-| 1        | 0       | 0      | 0            | 0                   |
-| 2        | 0       | 0      | 0            | 0                   |
-| 3        | 0       | 0      | 0            | 0                   |
-| 4        | 0       | 0      | 0            | 0                   |
-| 5        | 0       | 0      | 0            | 0                   |
-| 6        | 0       | 0      | 0            | 0                   |
-| 7        | 0       | 0      | 0            | 0                   |
-| 8        | 0       | 0      | 0            | 0                   |
-| 9        | 0       | 0      | 0            | 0                   |
-| 10       | 0       | 0      | 0            | 0                   |
-| Mean delta % | - | 0.00% | 0.00% | 0.00% |
-
-### 4.3. Beast - 1 second
-
-#### 4.3.1. Standard set
+### 4.3. Beast - 1 second limit
 
 | Instance | Optimal | Greedy | Local Search | Simulated Annealing |
 | -------- | ------- | ------ | ------------ | ------------------- |
-| 1        | 0       | 0      | 0            | 0                   |
-| 2        | 0       | 0      | 0            | 0                   |
-| 3        | 0       | 0      | 0            | 0                   |
-| 4        | 0       | 0      | 0            | 0                   |
-| 5        | 0       | 0      | 0            | 0                   |
-| 6        | 0       | 0      | 0            | 0                   |
-| 7        | 0       | 0      | 0            | 0                   |
-| 8        | 0       | 0      | 0            | 0                   |
-| 9        | 0       | 0      | 0            | 0                   |
-| 10       | 0       | 0      | 0            | 0                   |
-| Mean delta % | - | 0.00% | 0.00% | 0.00% |
-
-#### 4.3.2. Large set
-
-| Instance | Optimal | Greedy | Local Search | Simulated Annealing |
-| -------- | ------- | ------ | ------------ | ------------------- |
-| 1        | 0       | 0      | 0            | 0                   |
-| 2        | 0       | 0      | 0            | 0                   |
-| 3        | 0       | 0      | 0            | 0                   |
-| 4        | 0       | 0      | 0            | 0                   |
-| 5        | 0       | 0      | 0            | 0                   |
-| 6        | 0       | 0      | 0            | 0                   |
-| 7        | 0       | 0      | 0            | 0                   |
-| 8        | 0       | 0      | 0            | 0                   |
-| 9        | 0       | 0      | 0            | 0                   |
-| 10       | 0       | 0      | 0            | 0                   |
-| Mean delta % | - | 0.00% | 0.00% | 0.00% |
+| mmkp_a_09.txt        | 49147       | 30286 (-38.37%)      | 47355 (-3.64%)            | 47408 (-3.53%)                   |
+| mmkp_a_13.txt       | 98388       | 60113 (-38.90%)      | 94219 (-4.23%)            | 94359 (-4.09%)                   |
+| mmkp_b_07.txt        | 16410       | 12148 (-25.97%)      | 15586 (-5.02%)            | 15735 (-4.11%)                   |
+| mmkp_b_16.txt        | 42617       | 23909 (-43.89%)      | 41703 (-2.14%)            | 41225 (-3.26%)                  |
+| mmkp_c_25.txt        | 44126       | 32196 (-27.03%)      | 42265 (-4.21%)            | 41306 (-6.39%)                  |
+| mmkp_c_26.txt        | 44440      | 31915 (-28.18%)      | 42310 (-4.79%)            | 41891 (-5.73%)                  |
+| mmkp_d_1.txt        | 25647       | 18792 (-26.72%)      | 24706 (-3.66%)            | 24820 (-3.22%)                  |
+| mmkp_d_205.txt        | 80488       | 70831 (-11.99%)      | 79737 (-.93%)            | 79651 (-1.03%)                   |
+| mmkp_d_236.txt        | 352469       | 310345 (-11.95%)      | 349761 (-.76%)            | 349667 (-.79%)                   |
+| mmkp_d_98.txt       | 227576       | 175385 (-22.93%)      | 219792 (-3.42%)            | 219388 (-3.59%)                   |
+| **Mean delta %** | - | **-27.593** | **-3.28%** | **-3.574%** |
 
 ## 5. Testing instances
 
