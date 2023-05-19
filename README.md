@@ -30,8 +30,27 @@ $$
 $$
 
 ### Objective function
+$$
+\begin{align*}
+\max{i} \sum_{i=1}^n \sum_{j=1}^{r_i} v_{i,j} * x_{i,j}
+\end{align*}
+$$
+
+> AMPL: maximize z: sum{c in C, n in N} v[c,n]*x[c,n];
 
 
+### Contraints
+
+#### Resource constraints
+
+> AMPL: s.t. capacity_constraint{r in R}:
+  sum{c in C, n in N} w[c,n,r]*x[c,n] <= q[r];
+
+
+#### Class constraints
+
+> AMPL: s.t. class_constraint{c in C}:
+  sum{n in N} x[c,n] = 1;
 
 ### Input data format
 
