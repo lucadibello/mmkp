@@ -38,9 +38,7 @@ void writeSolution()
 void signalHandler(int signum)
 {
     std::cout << "Running finalizing code. Interrupt signal (" << signum << ") received.\n";
-
     writeSolution();
-
     exit(signum);
 }
 
