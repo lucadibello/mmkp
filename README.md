@@ -134,7 +134,32 @@ By employing this local search algorithm, we overcome the challenges of the MMKP
 
 ### 3.4. Simulated annealing algorithm (metaheuristic)
 
+The local search algorithm has a drawback of getting stuck in local optima, as it only accepts better solutions. This limitation restricts the exploration of potentially better solutions that could represent the global optima. To overcome this issue, we have implemented a simulated annealing algorithm, which takes a probabilistic approach by accepting worse solutions to escape local optima and explore a broader range of potential solutions.
 
+The neighborhood generation in the simulated annealing algorithm utilizes the same 2-OPT random-swap neighborhood function discussed in the local search algorithm.
+
+The Neighborhood is generate using the same 2-OPT random-swap Neighborhood function discussed in the Local Search algorithm.
+
+The algorithm incorporates two crucial parameters:
+
+1. The first parameter is the *temperature* ($C$), which controls the acceptance probability of worse solutions. Initially, the temperature is set to a high value, and it gradually decreases as the algorithm progresses. The temperature value influences the extent to which the algorithm explores the search space, including potentially suboptimal solutions.
+
+2. The second parameter is the *reduction rate* or *cooling rate* ($L$), which determines the rate at which the temperature decreases during the annealing process. Choosing an appropriate cooling rate is vital for the success of the algorithm and must be determined through experimentation and fine-tuning.
+
+The probability of accepting a worse solution is calculated using the following formula:
+
+$$
+\begin{align*}
+    P & = e^{\frac{z_{new} - z_{opt}}{C}} \\
+    where \\
+    z_{new} & = new\ neighbor\ solution\ value \\
+    z_{opt} & = current\ optimal\ solution\ value
+\end{align*}
+$$
+
+By incorporating simulated annealing as a metaheuristic, we mitigate the limitations of the local search algorithm and enable exploration of a wider range of solution space. The acceptance of worse solutions in a controlled manner allows the algorithm to escape local optima and potentially converge towards the global optima.
+
+It is worth noting that the effectiveness of the simulated annealing algorithm depends on appropriately setting the temperature and cooling rate parameters, which may require experimentation and adjustment for optimal performance.
 
 > Since the algorithm continues searching until a SIGINT signal is received, we strongly suggest running the algorithm using the script provided in [this section](#6-utility-scripts) to set a time limit.
 
