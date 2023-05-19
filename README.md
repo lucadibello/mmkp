@@ -100,7 +100,7 @@ The solution is an alternative to the well-known MMKP relaxation solution. It wo
 
 $$
 \begin{align*}
-    ratio_{class} = \sum_{c=1}^m \frac{\sum_{n=1}^N w^c_{i,n}}{C^c} \forall i \in n
+    ratio_{class} = \sum_{c=1}^m\frac{\sum_{n=1}^N w^c_{i,n}}{C^c} \forall i \in n
 \end{align*}
 $$
 
