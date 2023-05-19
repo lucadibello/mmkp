@@ -40,4 +40,4 @@ fabric.properties
 
 # MMKP runner output
 verifier/stats.txt
-
+.vscode
