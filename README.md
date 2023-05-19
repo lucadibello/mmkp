@@ -1,29 +1,71 @@
-# mmkp
+# MMKP - Multiple-Choice Multidimensional Knapsack Problem
 
-Multiple-choice multidimensional knapsack problem implementation
+## Problem description
 
-## Data format
+Multiple-choice multidimensional knapsack problem implementation in C++.
 
-```text
+## Mathematical representation
+
+### Sets / Domains
+
+* $N$: Sets of items divided in
+* $J = (J_1, J_2, ..., J_n)$: $n$ disjoint classes
+* $C = (C^1, C^2, ..., C^m)$: Resource vector of size $m$ (constrained multidimensional capacity of the knapsack)
+
+### Data
+
+* $r_i = |J_i|$: Number of items in each class
+* $v_{i,j}$: Value of item $j \in \{1..r_i\}$ for class $i \in \{1..n\}$
+* $w^k_{i,j}$: Weight of item $j \in \{1..r_i\}$ for class $i \in \{1..n\}$, for the resource $k \in \{1..m\}$
+
+### Mathematical model
+
+$$
+\begin{align*}
+    z & = \min \sum_{i=1}^n \sum_{j=1}^{r_i} v_{i,j} * x_{i,j} \\
+    s.t. & \sum_{i=1}^n \sum_{j=1}^{r_i} w^k_{i,j} * x_{i,j} \leq C^k & \forall k \in \{1..m\} \\
+    & \sum_{j=1}^{r_i} x_{i,j} = 1 & \forall i \in \{1..n\} \\
+    & x_{i,j} \in \{0,1\}
+\end{align*}
+$$
+
+### Objective function
+
+
+
+### Input data format
+
+```latex
 N M 
 Q1 Q2 Q3 ... QM
-I
-V1 W11 W12 W13 .. W1M
-V2 W21 W22 W23 .. W2M
+I1
+V1 W111 W112 W113 .. W11M
+V2 W121 W122 W123 .. W12M
 ...
-VI WI1 WI2 WI3 .. WIM
-
-N = Number of classes 
-M = Number of resources
-Q1 .. QM = Capacity of i-th resource
-
-
-N classes definition follow:
-  I = Number of items on the j-th class
-  I items definition follow:
-    V1 = Value of the item
-    W11 .. W1M = Weight of the item for i-th resource
+VJ WJ1 WJ2 WJ3 .. WIJM
 ```
+
+Where:
+
+* $N$ = Number of classes
+* $M$ = Number of resources
+* $Q_m$ = Capacity of the m-th resource $\forall m \in \{1..M\}$
+* $I_n$ = Number of items on the n-th class $\forall n \in \{1..N\}$
+* $V_ij$ = Value of the item j on the i-th class $\forall i \in \{1..N\}, \forall j \in \{1..I_i\}$
+* $W_ijm$ = Weight of the item j on the i-th class for the m-th resource $\forall i \in \{1..N\}, \forall j \in \{1..I_i\}, \forall m \in \{1..M\}$
+
+## Academic papers
+
+* [The multiple-choice multidimensional knapsack problem - Greedy implementation](./docs/MMKP_Greedy.pdf)
+
+* [The multiple-choice multidimensional knapsack problem - Local search implementation](./docs/MMKP_LocalSearch.pdf)
+
+* [The multiple-choice multidimensional knapsack problem - Metaheuristic implementation](./docs/MMKP_Metaheuristic.pdf)
+
+## Additional tools
+
+- AMPL solver:
+- Bash utility scripts
 
 ## Scripts
 
@@ -62,6 +104,8 @@ In the other hand, with the `--skip-compute` option the script does not run the 
 
 If you combine the `--skip-compute` and `--only-standard` options, the script verifies the results for the standard instances only. 
 
-## Research papers
+## Authors
 
-- https://www.sciencedirect.com/science/article/abs/pii/S0305048317305777
+- Luca Di Bello <luca.dibello@student.supsi.ch>
+- Mattia Dell'Oca <mattia.delloca@student.supsi.ch>
+- Manuele Nolli <manuele.nolli@student.supsi.ch>
