@@ -169,7 +169,7 @@ It is worth noting that the effectiveness of the simulated annealing algorithm d
 
 ## 4. Performance comparison
 
-To assess the performance of the algorithms (Greedy, Local Search, and Simulated Annealing) on the testing instances, we conducted experiments using different time limits. We evaluated the algorithms on a subset of the standard and large instance sets, specifically 10 instances from each set. The results of these experiments are summarized in the following tables:
+In order to evaluate the performance of the Greedy, Local Search, and Simulated Annealing algorithms on the testing instances, we conducted experiments with varying time limits. Specifically, we assessed the algorithms on a subset of the standard instances, consisting of 10 instances. The results of these experiments are summarized in the following tables:
 
 > The following analysis is based on the results obtained by running the algorithms on a MacBook Mini M1 with 16GB of RAM and 8 CPU cores.
 
@@ -208,7 +208,7 @@ To assess the performance of the algorithms (Greedy, Local Search, and Simulated
 ### 4.3. Beast mode - 1 second limit
 
 | Instance | Optimal | Greedy | Local Search | Simulated Annealing |
-| -------- | ------- | ------ | ------------ | ------------------- |
+| :-------- | :-------: | :------: | :------------: | :-------------------: |
 | mmkp_a_09.txt        | 49147       | 30286 (-38.37%)      | 47355 (-3.64%)            | 47408 (-3.53%)                   |
 | mmkp_a_13.txt       | 98388       | 60113 (-38.90%)      | 94219 (-4.23%)            | 94359 (-4.09%)                   |
 | mmkp_b_07.txt        | 16410       | 12148 (-25.97%)      | 15586 (-5.02%)            | 15735 (-4.11%)                   |
