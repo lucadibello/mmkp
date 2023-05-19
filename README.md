@@ -23,34 +23,11 @@ Multiple-choice multidimensional knapsack problem implementation in C++.
 $$
 \begin{align*}
     z & = \min \sum_{i=1}^n \sum_{j=1}^{r_i} v_{i,j} * x_{i,j} \\
-    s.t. & \sum_{i=1}^n \sum_{j=1}^{r_i} w^k_{i,j} * x_{i,j} \leq C^k & \forall k \in \{1..m\} \\
+    subject\ to & \sum_{i=1}^n \sum_{j=1}^{r_i} w^k_{i,j} * x_{i,j} \leq C^k & \forall k \in \{1..m\} \\
     & \sum_{j=1}^{r_i} x_{i,j} = 1 & \forall i \in \{1..n\} \\
     & x_{i,j} \in \{0,1\}
 \end{align*}
 $$
-
-### Objective function
-$$
-\begin{align*}
-\max{i} \sum_{i=1}^n \sum_{j=1}^{r_i} v_{i,j} * x_{i,j}
-\end{align*}
-$$
-
-> AMPL: maximize z: sum{c in C, n in N} v[c,n]*x[c,n];
-
-
-### Contraints
-
-#### Resource constraints
-
-> AMPL: s.t. capacity_constraint{r in R}:
-  sum{c in C, n in N} w[c,n,r]*x[c,n] <= q[r];
-
-
-#### Class constraints
-
-> AMPL: s.t. class_constraint{c in C}:
-  sum{n in N} x[c,n] = 1;
 
 ### Input data format
 
