@@ -14,9 +14,9 @@
   - [3.3. Local search algorithm (heuristic)](#33-local-search-algorithm-heuristic)
   - [3.4. Simulated annealing algorithm (metaheuristic)](#34-simulated-annealing-algorithm-metaheuristic)
 - [4. Performance comparison](#4-performance-comparison)
-  - [4.1. Standard - 60 seconds limit](#41-standard---60-seconds-limit)
-  - [4.2. Fast - 10 seconds limit](#42-fast---10-seconds-limit)
-  - [4.3. Beast - 1 second limit](#43-beast---1-second-limit)
+  - [4.1. Standard mode - 60 seconds limit](#41-standard-mode---60-seconds-limit)
+  - [4.2. Fast mode - 10 seconds limit](#42-fast-mode---10-seconds-limit)
+  - [4.3. Beast mode - 1 second limit](#43-beast-mode---1-second-limit)
 - [5. Testing instances](#5-testing-instances)
 - [6. Academic papers](#6-academic-papers)
 - [7. Utility scripts](#7-utility-scripts)
@@ -173,7 +173,7 @@ To assess the performance of the algorithms (Greedy, Local Search, and Simulated
 
 > The following analysis is based on the results obtained by running the algorithms on a MacBook Mini M1 with 16GB of RAM and 8 CPU cores.
 
-### 4.1. Standard - 60 seconds limit
+### 4.1. Standard mode - 60 seconds limit
 
 | Instance | Optimal | Greedy | Local Search | Simulated Annealing |
 | -------- | ------- | ------ | ------------ | ------------------- |
@@ -189,7 +189,7 @@ To assess the performance of the algorithms (Greedy, Local Search, and Simulated
 | mmkp_d_98.txt       | 227576       | 175395 (-22.92%)      | 220762 (-2.99%)            | 221662 (-2.59%)                   |
 | **Mean delta %** | - | **-27.587%** | **-2.876%** | **-1.796%** |
 
-### 4.2. Fast - 10 seconds limit
+### 4.2. Fast mode - 10 seconds limit
 
 | Instance | Optimal | Greedy | Local Search | Simulated Annealing |
 | -------- | ------- | ------ | ------------ | ------------------- |
@@ -205,7 +205,7 @@ To assess the performance of the algorithms (Greedy, Local Search, and Simulated
 | mmkp_d_98.txt       | 227576       | 175395 (-22.92%)      | 220124 (-3.27%)            | 220219 (-3.23%)                   |
 | **Mean delta %** | - | **-27.587%** | **-2.659%** | **-2.403%** |
 
-### 4.3. Beast - 1 second limit
+### 4.3. Beast mode - 1 second limit
 
 | Instance | Optimal | Greedy | Local Search | Simulated Annealing |
 | -------- | ------- | ------ | ------------ | ------------------- |
