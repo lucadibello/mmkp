@@ -100,7 +100,7 @@ The solution is an alternative to the well-known MMKP relaxation solution. It wo
 
 $$
 \begin{align*}
-    class\ ratio = \sum_{c=1}^m \frac{\sum_{n=1}^N w^c_{i,n}}{C^c} \forall i \in n
+    ratio_{class} = \sum_{c=1}^m \frac{\sum_{n=1}^N w^c_{i,n}}{C^c} \forall i \in n
 \end{align*}
 $$
 
@@ -110,7 +110,7 @@ This sorting enables prioritizing the classes that have a higher average weight 
 
 $$
 \begin{align*}
-    item\ ratio = \sum_{j=1}^{r_i} \sum_{k=1}^{m} \frac{w^k_{i,j}}{C^k} \forall i \in n
+    ratio_{item} = \sum_{j=1}^{r_i} \sum_{k=1}^{m} \frac{w^k_{i,j}}{C^k} \forall i \in n
 \end{align*}
 $$
 
