@@ -176,7 +176,7 @@ In order to evaluate the performance of the Greedy, Local Search, and Simulated 
 ### 4.1. Standard mode - 60 seconds limit
 
 | Instance | Optimal | Greedy | Local Search | Simulated Annealing |
-| -------- | ------- | ------ | ------------ | ------------------- |
+| :-------- | :-------: | :------: | :------------: | :-------------------: |
 | mmkp_a_09.txt        | 49147       | 30286 (-38.37%)      | 47687 (-2.97%)            | 47995 (-2.34%)                   |
 | mmkp_a_13.txt       | 98388       | 60113 (-38.90%)      | 95457 (-2.97%)            | 95806 (-2.62%)                   |
 | mmkp_b_07.txt        | 16410       | 12148 (-25.97%)      | 15690 (-4.38%)            | 15929 (-2.93%)                   |
@@ -192,7 +192,7 @@ In order to evaluate the performance of the Greedy, Local Search, and Simulated 
 ### 4.2. Fast mode - 10 seconds limit
 
 | Instance | Optimal | Greedy | Local Search | Simulated Annealing |
-| -------- | ------- | ------ | ------------ | ------------------- |
+| :-------- | :-------: | :------: | :------------: | :-------------------: |
 | mmkp_a_09.txt        | 49147       | 30286 (-38.37%)      | 47919 (-2.49%)            | 47619 (-3.10%)                   |
 | mmkp_a_13.txt       | 98388       | 60113 (-38.90%)      | 94760 (-3.68%)            | 94963 (-3.48%)                   |
 | mmkp_b_07.txt        | 16410       | 12148 (-25.97%)      | 15809 (-3.66%)            | 15719 (-4.21%)                   |
