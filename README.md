@@ -98,21 +98,13 @@ The solution is an alternative to the well-known MMKP relaxation solution. It wo
 
 - **Class sorting**: In this step, the algorithm sorts the classes based on the average weight divided by the remaining knapsack capacity for each resource. The class ratio formula used is:
 
-$$
-\begin{align*}
-    ratio_{class} = \sum_{c=1}^m\frac{\sum_{n=1}^N w^c_{i,n}}{C^c} \forall i \in n
-\end{align*}
-$$
+  - $ratio_{class} = \sum_{c=1}^m \frac{\sum_{n=1}^N w^c_{i,n}}{C^c} \forall i \in n$
 
 This sorting enables prioritizing the classes that have a higher average weight relative to the remaining capacity.
 
 - **Item sorting**: Once the classes are sorted, the algorithm proceeds to sort the items within each class. The sorting is based on the value, weight, and the remaining knapsack capacity. The item ratio formula used is:
 
-$$
-\begin{align*}
-    ratio_{item} = \sum_{j=1}^{r_i} \sum_{k=1}^{m} \frac{w^k_{i,j}}{C^k} \forall i \in n
-\end{align*}
-$$
+  - $ratio_{item} = \sum_{j=1}^{r_i} \sum_{k=1}^{m} \frac{w^k_{i,j}}{C^k} \forall i \in n$
 
 This ratio considers the weight of the item in each resource and the corresponding remaining capacity, allowing for the selection of items that contribute significantly to the overall value.
 
