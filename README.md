@@ -13,7 +13,8 @@
   - [3.2. Greedy algorithm (heuristic)](#32-greedy-algorithm-heuristic)
   - [3.3. Local search algorithm (heuristic)](#33-local-search-algorithm-heuristic)
   - [3.4. Simulated annealing algorithm (metaheuristic)](#34-simulated-annealing-algorithm-metaheuristic)
-- [4. Academic papers](#4-academic-papers)
+- [4. Testing instances](#4-testing-instances)
+- [5. Academic papers](#5-academic-papers)
 - [6. Utility scripts](#6-utility-scripts)
   - [6.1. Start MMKP](#61-start-mmkp)
   - [6.2. Start verifier](#62-start-verifier)
@@ -132,7 +133,18 @@ By employing this local search algorithm, we overcome the challenges of the MMKP
 ### 3.4. Simulated annealing algorithm (metaheuristic)
 
 
-## 4. Academic papers
+
+> Since the algorithm continues searching until a SIGINT signal is received, we strongly suggest running the algorithm using the script provided in [this section](#6-utility-scripts) to set a time limit.
+
+## 4. Testing instances
+
+To evaluate the performance of the algorithms, we have prepared two sets of instances for testing purposes. The first set consists of standard instances, which includes 261 instances. You can access these instances [here](./data/standard/). The second set comprises larger instances, with a total of 25 instances, and you can find them [here](./data/large/).
+
+For reference and comparison, we have compiled the best known solutions for both sets of instances in the file [solutions.csv](./data/solutions.csv). This file provides the benchmark solutions against which the algorithm results can be measured.
+
+By utilizing these testing instances, you can assess the effectiveness and efficiency of the algorithms in solving the MMKP. The standard set provides a diverse range of instances, while the large set offers more challenging scenarios. Referencing the best known solutions enables you to evaluate the quality of the algorithm outputs and compare them with the optimal or near-optimal solutions.
+
+## 5. Academic papers
 
 - [The multiple-choice multidimensional knapsack problem - Greedy implementation](./docs/MMKP_Greedy.pdf)
 
