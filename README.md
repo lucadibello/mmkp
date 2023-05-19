@@ -56,7 +56,7 @@ The problem can be defined as follows:
 
 $$
 \begin{align*}
-    z & = \min \sum_{i=1}^n \sum_{j=1}^{r_i} v_{i,j} * x_{i,j} \\
+    z & = \max \sum_{i=1}^n \sum_{j=1}^{r_i} v_{i,j} * x_{i,j} \\
     s.t. & \sum_{i=1}^n \sum_{j=1}^{r_i} w^k_{i,j} * x_{i,j} \leq C^k & \forall k \in \{1..m\} \\
     & \sum_{j=1}^{r_i} x_{i,j} = 1 & \forall i \in \{1..n\} \\
     & x_{i,j} \in \{0,1\}
@@ -272,7 +272,17 @@ bash runner.sh <seconds> [--skip-compute] [--only-standard]
 With the `--skip-compute` option the script does not run the algorithm, it only verifies the results. With the `--only-standard` option the script runs the algorithm only for the standard instances, by default it runs the algorithm for both standard and large instances.
 In the other hand, with the `--skip-compute` option the script does not run the algorithm, it only verifies the results for the instances that have already been computed.
 
-If you combine the `--skip-compute` and `--only-standard` options, the script verifies the results for the standard instances only. 
+If you combine the `--skip-compute` and `--only-standard` options, the script verifies the results for the standard instances only.
+
+## Useful links
+
+- [AMPL](https://ampl.com/)
+- [CPLEX](https://www.ibm.com/products/ilog-cplex-optimization-studio/cplex-optimizer)
+- [Jupyter Notebook](https://jupyter.org/)
+- [LaTeX](https://www.latex-project.org/)
+- [CMake](https://cmake.org/)
+- [C++](https://isocpp.org/)
+-  [MMKP](https://en.wikipedia.org/wiki/Multiple-choice_knapsack_problem)
 
 ## 8. Authors
 
