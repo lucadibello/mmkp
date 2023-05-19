@@ -13,17 +13,23 @@
   - [3.2. Greedy algorithm (heuristic)](#32-greedy-algorithm-heuristic)
   - [3.3. Local search algorithm (heuristic)](#33-local-search-algorithm-heuristic)
   - [3.4. Simulated annealing algorithm (metaheuristic)](#34-simulated-annealing-algorithm-metaheuristic)
-- [Performance comparison](#performance-comparison)
-  - [Standard - 60 seconds](#standard---60-seconds)
-  - [Fast - 10 seconds](#fast---10-seconds)
-  - [Beast - 1 second](#beast---1-second)
-- [4. Testing instances](#4-testing-instances)
-- [5. Academic papers](#5-academic-papers)
-- [6. Utility scripts](#6-utility-scripts)
-  - [6.1. Start MMKP](#61-start-mmkp)
-  - [6.2. Start verifier](#62-start-verifier)
-  - [6.3. Runner](#63-runner)
-- [7. Authors](#7-authors)
+- [4. Performance comparison](#4-performance-comparison)
+  - [4.1. Standard - 60 seconds](#41-standard---60-seconds)
+    - [4.1.1. Standard set](#411-standard-set)
+    - [4.1.2. Large set](#412-large-set)
+  - [4.2. Fast - 10 seconds](#42-fast---10-seconds)
+    - [4.2.1. Standard set](#421-standard-set)
+    - [4.2.2. Large set](#422-large-set)
+  - [4.3. Beast - 1 second](#43-beast---1-second)
+    - [4.3.1. Standard set](#431-standard-set)
+    - [4.3.2. Large set](#432-large-set)
+- [5. Testing instances](#5-testing-instances)
+- [6. Academic papers](#6-academic-papers)
+- [7. Utility scripts](#7-utility-scripts)
+  - [7.1. Start MMKP](#71-start-mmkp)
+  - [7.2. Start verifier](#72-start-verifier)
+  - [7.3. Runner](#73-runner)
+- [8. Authors](#8-authors)
 
 ## 1. Problem description
 
@@ -165,47 +171,17 @@ By incorporating simulated annealing as a metaheuristic, we mitigate the limitat
 
 It is worth noting that the effectiveness of the simulated annealing algorithm depends on appropriately setting the temperature and cooling rate parameters, which may require experimentation and adjustment for optimal performance.
 
-> Since the algorithm continues searching until a SIGINT signal is received, we strongly suggest running the algorithm using the script provided in [this section](#6-utility-scripts) to set a time limit.
+> Since the algorithm continues searching until a SIGINT signal is received, we strongly suggest running the algorithm using the script provided in [this section](#7-utility-scripts) to set a time limit.
 
-## Performance comparison
+## 4. Performance comparison
 
 The testing instances were run using the three algorithms (Greedy, Local Search, and Simulated Annealing) with three different time limits (1s, 10s, and 60s). The results are summarized in the following tables.
 
 > The following analysis is based on the results obtained by running the algorithms on a MacBook Mini M1 with 16GB of RAM and 8 CPU cores.
 
-### Standard - 60 seconds
+### 4.1. Standard - 60 seconds
 
-| Instance | Optimal | Greedy | Local Search | Simulated Annealing |
-| -------- | ------- | ------ | ------------ | ------------------- |
-| 1        | 0       | 0      | 0            | 0                   |
-| 2        | 0       | 0      | 0            | 0                   |
-| 3        | 0       | 0      | 0            | 0                   |
-| 4        | 0       | 0      | 0            | 0                   |
-| 5        | 0       | 0      | 0            | 0                   |
-| 6        | 0       | 0      | 0            | 0                   |
-| 7        | 0       | 0      | 0            | 0                   |
-| 8        | 0       | 0      | 0            | 0                   |
-| 9        | 0       | 0      | 0            | 0                   |
-| 10       | 0       | 0      | 0            | 0                   |
-| Mean delta % | - | 0.00% | 0.00% | 0.00% |
-### Fast - 10 seconds
-
-
-| Instance | Optimal | Greedy | Local Search | Simulated Annealing |
-| -------- | ------- | ------ | ------------ | ------------------- |
-| 1        | 0       | 0      | 0            | 0                   |
-| 2        | 0       | 0      | 0            | 0                   |
-| 3        | 0       | 0      | 0            | 0                   |
-| 4        | 0       | 0      | 0            | 0                   |
-| 5        | 0       | 0      | 0            | 0                   |
-| 6        | 0       | 0      | 0            | 0                   |
-| 7        | 0       | 0      | 0            | 0                   |
-| 8        | 0       | 0      | 0            | 0                   |
-| 9        | 0       | 0      | 0            | 0                   |
-| 10       | 0       | 0      | 0            | 0                   |
-| Mean delta % | - | 0.00% | 0.00% | 0.00% |
-
-### Beast - 1 second
+#### 4.1.1. Standard set
 
 | Instance | Optimal | Greedy | Local Search | Simulated Annealing |
 | -------- | ------- | ------ | ------------ | ------------------- |
@@ -221,7 +197,91 @@ The testing instances were run using the three algorithms (Greedy, Local Search,
 | 10       | 0       | 0      | 0            | 0                   |
 | Mean delta % | - | 0.00% | 0.00% | 0.00% |
 
-## 4. Testing instances
+#### 4.1.2. Large set
+
+| Instance | Optimal | Greedy | Local Search | Simulated Annealing |
+| -------- | ------- | ------ | ------------ | ------------------- |
+| 1        | 0       | 0      | 0            | 0                   |
+| 2        | 0       | 0      | 0            | 0                   |
+| 3        | 0       | 0      | 0            | 0                   |
+| 4        | 0       | 0      | 0            | 0                   |
+| 5        | 0       | 0      | 0            | 0                   |
+| 6        | 0       | 0      | 0            | 0                   |
+| 7        | 0       | 0      | 0            | 0                   |
+| 8        | 0       | 0      | 0            | 0                   |
+| 9        | 0       | 0      | 0            | 0                   |
+| 10       | 0       | 0      | 0            | 0                   |
+| Mean delta % | - | 0.00% | 0.00% | 0.00% |
+
+### 4.2. Fast - 10 seconds
+
+#### 4.2.1. Standard set
+
+| Instance | Optimal | Greedy | Local Search | Simulated Annealing |
+| -------- | ------- | ------ | ------------ | ------------------- |
+| 1        | 0       | 0      | 0            | 0                   |
+| 2        | 0       | 0      | 0            | 0                   |
+| 3        | 0       | 0      | 0            | 0                   |
+| 4        | 0       | 0      | 0            | 0                   |
+| 5        | 0       | 0      | 0            | 0                   |
+| 6        | 0       | 0      | 0            | 0                   |
+| 7        | 0       | 0      | 0            | 0                   |
+| 8        | 0       | 0      | 0            | 0                   |
+| 9        | 0       | 0      | 0            | 0                   |
+| 10       | 0       | 0      | 0            | 0                   |
+| Mean delta % | - | 0.00% | 0.00% | 0.00% |
+
+#### 4.2.2. Large set
+
+| Instance | Optimal | Greedy | Local Search | Simulated Annealing |
+| -------- | ------- | ------ | ------------ | ------------------- |
+| 1        | 0       | 0      | 0            | 0                   |
+| 2        | 0       | 0      | 0            | 0                   |
+| 3        | 0       | 0      | 0            | 0                   |
+| 4        | 0       | 0      | 0            | 0                   |
+| 5        | 0       | 0      | 0            | 0                   |
+| 6        | 0       | 0      | 0            | 0                   |
+| 7        | 0       | 0      | 0            | 0                   |
+| 8        | 0       | 0      | 0            | 0                   |
+| 9        | 0       | 0      | 0            | 0                   |
+| 10       | 0       | 0      | 0            | 0                   |
+| Mean delta % | - | 0.00% | 0.00% | 0.00% |
+
+### 4.3. Beast - 1 second
+
+#### 4.3.1. Standard set
+
+| Instance | Optimal | Greedy | Local Search | Simulated Annealing |
+| -------- | ------- | ------ | ------------ | ------------------- |
+| 1        | 0       | 0      | 0            | 0                   |
+| 2        | 0       | 0      | 0            | 0                   |
+| 3        | 0       | 0      | 0            | 0                   |
+| 4        | 0       | 0      | 0            | 0                   |
+| 5        | 0       | 0      | 0            | 0                   |
+| 6        | 0       | 0      | 0            | 0                   |
+| 7        | 0       | 0      | 0            | 0                   |
+| 8        | 0       | 0      | 0            | 0                   |
+| 9        | 0       | 0      | 0            | 0                   |
+| 10       | 0       | 0      | 0            | 0                   |
+| Mean delta % | - | 0.00% | 0.00% | 0.00% |
+
+#### 4.3.2. Large set
+
+| Instance | Optimal | Greedy | Local Search | Simulated Annealing |
+| -------- | ------- | ------ | ------------ | ------------------- |
+| 1        | 0       | 0      | 0            | 0                   |
+| 2        | 0       | 0      | 0            | 0                   |
+| 3        | 0       | 0      | 0            | 0                   |
+| 4        | 0       | 0      | 0            | 0                   |
+| 5        | 0       | 0      | 0            | 0                   |
+| 6        | 0       | 0      | 0            | 0                   |
+| 7        | 0       | 0      | 0            | 0                   |
+| 8        | 0       | 0      | 0            | 0                   |
+| 9        | 0       | 0      | 0            | 0                   |
+| 10       | 0       | 0      | 0            | 0                   |
+| Mean delta % | - | 0.00% | 0.00% | 0.00% |
+
+## 5. Testing instances
 
 To evaluate the performance of the algorithms, we have prepared two sets of instances for testing purposes. The first set consists of standard instances, which includes 261 instances. You can access these instances [here](./data/standard/). The second set comprises larger instances, with a total of 25 instances, and you can find them [here](./data/large/).
 
@@ -229,7 +289,7 @@ For reference and comparison, we have compiled the best known solutions for both
 
 By utilizing these testing instances, you can assess the effectiveness and efficiency of the algorithms in solving the MMKP. The standard set provides a diverse range of instances, while the large set offers more challenging scenarios. Referencing the best known solutions enables you to evaluate the quality of the algorithm outputs and compare them with the optimal or near-optimal solutions.
 
-## 5. Academic papers
+## 6. Academic papers
 
 - [The multiple-choice multidimensional knapsack problem - Greedy implementation](./docs/MMKP_Greedy.pdf)
 
@@ -237,11 +297,11 @@ By utilizing these testing instances, you can assess the effectiveness and effic
 
 - [The multiple-choice multidimensional knapsack problem - Metaheuristic implementation](./docs/MMKP_Metaheuristic.pdf)
 
-## 6. Utility scripts
+## 7. Utility scripts
 
 > Notice: Be careful, you have to build `mmkp` and `verifier` before running the scripts and the compiled executables must be in the default directory `./cmake-build-debug/`.
 
-### 6.1. Start MMKP
+### 7.1. Start MMKP
 
 `start-mmkp` is a script that runs the algorithm for a single instance and saves the results in a file named `<instance_name>.txt.out`. The script creates also a file named `<instance_name>.txt.time` with the time spent to compute the solution.
 
@@ -251,7 +311,7 @@ By utilizing these testing instances, you can assess the effectiveness and effic
 
 With the `-v` option the script prints the program output to the standard output, by default the output is redirected to avoid cluttering the terminal. 
 
-### 6.2. Start verifier
+### 7.2. Start verifier
 
 `start-verifier` is a script that verifies the solution of a single instance. The script verifies that the solution is feasible and that has not exceeded the time limit (by default is 60s).
 
@@ -259,7 +319,7 @@ With the `-v` option the script prints the program output to the standard output
 ./start-verifier.sh <instance>
 ```
 
-### 6.3. Runner
+### 7.3. Runner
 
 `runner` is a script that runs the algorithm for all the instances (standard and large) and check the results against the optimal solutions. The script verifies that the solution is feasible and that has not exceeded the time limit (by default is 60s).
 
@@ -274,7 +334,7 @@ In the other hand, with the `--skip-compute` option the script does not run the 
 
 If you combine the `--skip-compute` and `--only-standard` options, the script verifies the results for the standard instances only. 
 
-## 7. Authors
+## 8. Authors
 
 - Luca Di Bello <luca.dibello@student.supsi.ch>
 - Mattia Dell'Oca <mattia.delloca@student.supsi.ch>
