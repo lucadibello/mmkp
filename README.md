@@ -1,4 +1,26 @@
-# MMKP - Multiple-Choice Multidimensional Knapsack Problem
+# MMKP - Multiple-Choice Multidimensional Knapsack Problem<!-- omit in toc -->
+
+## Table of contents<!-- omit in toc -->
+
+- [1. Problem description](#1-problem-description)
+- [2. Mathematical representation](#2-mathematical-representation)
+  - [2.1. Sets / Domains](#21-sets--domains)
+  - [2.2. Data](#22-data)
+  - [2.3. Mathematical model](#23-mathematical-model)
+  - [2.4. Input data format](#24-input-data-format)
+- [3. Developed algorithms \& solvers](#3-developed-algorithms--solvers)
+  - [3.1. AMPL solver (exact)](#31-ampl-solver-exact)
+  - [3.2. Greedy algorithm (heuristic)](#32-greedy-algorithm-heuristic)
+  - [3.3. Local search algorithm (heuristic)](#33-local-search-algorithm-heuristic)
+  - [3.4. Simulated annealing algorithm (metaheuristic)](#34-simulated-annealing-algorithm-metaheuristic)
+- [4. Academic papers](#4-academic-papers)
+- [6. Utility scripts](#6-utility-scripts)
+  - [6.1. Start MMKP](#61-start-mmkp)
+  - [6.2. Start verifier](#62-start-verifier)
+  - [6.3. Runner](#63-runner)
+- [7. Authors](#7-authors)
+
+## 1. Problem description
 
 This is an implementation of the Multiple-Choice Multidimensional Knapsack Problem using C++. The MMKP involves selecting items from a given set, where each item has multiple attributes or dimensions. The goal is to maximize the total value of the selected items while respecting the capacity constraints of the knapsack.
 
@@ -9,15 +31,15 @@ The problem can be defined as follows:
 - The knapsack has a limited capacity in terms of weight and possibly other constraints.
 - The goal is to select a subset of items that maximizes the total value while ensuring that the selected items do not exceed the knapsack's capacity.
 
-## Mathematical representation
+## 2. Mathematical representation
 
-### Sets / Domains
+### 2.1. Sets / Domains
 
 - $N$: Sets of items divided in
 - $J = (J_1, J_2, ..., J_n)$: $n$ disjoint classes
 - $C = (C^1, C^2, ..., C^m)$: Resource vector of size $m$ (constrained multidimensional capacity of the knapsack)
 
-### Data
+### 2.2. Data
 
 - $n$: Number of classes
 - $m$: Number of resources
@@ -25,7 +47,7 @@ The problem can be defined as follows:
 - $v_{i,j}$: Value of item $j \in \{1..r_i\}$ for class $i \in \{1..n\}$
 - $w^k_{i,j}$: Weight of item $j \in \{1..r_i\}$ for class $i \in \{1..n\}$, for the resource $k \in \{1..m\}$
 
-### Mathematical model
+### 2.3. Mathematical model
 
 $$
 \begin{align*}
@@ -36,7 +58,7 @@ $$
 \end{align*}
 $$
 
-### Input data format
+### 2.4. Input data format
 
 ```latex
 N M 
@@ -57,9 +79,9 @@ Where:
 - $V_ij$ = Value of the item j on the i-th class $\forall i \in \{1..N\}, \forall j \in \{1..I_i\}$
 - $W_ijm$ = Weight of the item j on the i-th class for the m-th resource $\forall i \in \{1..N\}, \forall j \in \{1..I_i\}, \forall m \in \{1..M\}$
 
-## Developed algorithms & solvers
+## 3. Developed algorithms & solvers
 
-### AMPL solver (exact)
+### 3.1. AMPL solver (exact)
 
 We have developed an AMPL solver using [CPLEX](https://www.ibm.com/products/ilog-cplex-optimization-studio/cplex-optimizer) to provide an exact solution for the MMKP (Multiple-Choice Multidimensional Knapsack Problem). By formulating the problem as a mathematical model and utilizing the power of CPLEX, we can obtain the optimal solution. However, it is important to note that since the problem is NP-hard, computing the solution may take a considerable amount of time.
 
@@ -69,35 +91,60 @@ You can access the Jupyter Notebook by following this link: [MMKP.ipynb](./ampl/
 
 > Please note that the free CPLEX license provided by AMPL has a limitation of solving instances with up to 500 variables and constraints. If you are dealing with larger problem instances, it will be necessary to obtain a license by purchasing it from the appropriate sources.
 
-### Greedy algorithm (heuristic)
+### 3.2. Greedy algorithm (heuristic)
 
-The greedy algorithm starts with an empty knapsack and iteratively selects items based on their individual value-to-weight ratios. At each step, it selects the item with the highest ratio until the knapsack's capacity is reached. This approach provides a fast and reasonable solution, but it may not always yield the optimal solution.
+The solution is an alternative to the well-known MMKP relaxation solution. It works as follows:
 
-### Local search algorithm (heuristic)
+- **Class sorting**: In this step, the algorithm sorts the classes based on the average weight divided by the remaining knapsack capacity for each resource. The class ratio formula used is:
 
-### Simulated annealing algorithm (metaheuristic)
+$$
+\begin{align*}
+    class\ ratio = \sum_{c=1}^m \frac{\sum_{n=1}^N w^c_{i,n}}{C^c} \forall i \in n
+\end{align*}
+$$
+
+This sorting enables prioritizing the classes that have a higher average weight relative to the remaining capacity.
+
+- **Item sorting**: Once the classes are sorted, the algorithm proceeds to sort the items within each class. The sorting is based on the value, weight, and the remaining knapsack capacity. The item ratio formula used is:
+
+$$
+\begin{align*}
+    item\ ratio = \sum_{j=1}^{r_i} \sum_{k=1}^{m} \frac{w^k_{i,j}}{C^k} \forall i \in n
+\end{align*}
+$$
+
+This ratio considers the weight of the item in each resource and the corresponding remaining capacity, allowing for the selection of items that contribute significantly to the overall value.
+
+By employing the Greedy Algorithm, the MMKP can be solved efficiently. However, it is important to note that this approach may not always yield the optimal solution but provides a good approximation given the time constraints. The Greedy Algorithm offers a practical heuristic for tackling the MMKP and can be a valuable tool in situations where an exact solution is not required or feasible within the given time frame.
+
+### 3.3. Local search algorithm (heuristic)
+
+Our local search algorithm for MMKP addresses the challenges of a large search space and potential local optima. It employs a 2-OPT random double item swap as the neighborhood function. Starting with a random solution, the algorithm iteratively improves it by applying the neighborhood function.
+
+The random double item swap for two different classes consistently yields the best results. However, the algorithm has no predefined stop condition, and it continues searching until a SIGINT signal is received.
+
+The initial solution is generated using the greedy algorithm discussed earlier. This heuristic approach provides a reasonable starting point for subsequent iterative improvements.
+
+By employing this local search algorithm, we overcome the challenges of the MMKP search space and local optima. The 2-OPT random double item swap and iterative improvement process enhance the solution quality, allowing us to find optimal or near-optimal solutions to the problem.
+
+> Since the algorithm continues searching until a SIGINT signal is received, we strongly suggest running the algorithm using the script provided in [this section](#6-utility-scripts) to set a time limit.
+
+### 3.4. Simulated annealing algorithm (metaheuristic)
 
 
+## 4. Academic papers
 
+- [The multiple-choice multidimensional knapsack problem - Greedy implementation](./docs/MMKP_Greedy.pdf)
 
-## Academic papers
+- [The multiple-choice multidimensional knapsack problem - Local search implementation](./docs/MMKP_LocalSearch.pdf)
 
-* [The multiple-choice multidimensional knapsack problem - Greedy implementation](./docs/MMKP_Greedy.pdf)
+- [The multiple-choice multidimensional knapsack problem - Metaheuristic implementation](./docs/MMKP_Metaheuristic.pdf)
 
-* [The multiple-choice multidimensional knapsack problem - Local search implementation](./docs/MMKP_LocalSearch.pdf)
-
-* [The multiple-choice multidimensional knapsack problem - Metaheuristic implementation](./docs/MMKP_Metaheuristic.pdf)
-
-## Additional tools
-
-- AMPL solver:
-- Bash utility scripts
-
-## Scripts
+## 6. Utility scripts
 
 > Notice: Be careful, you have to build `mmkp` and `verifier` before running the scripts and the compiled executables must be in the default directory `./cmake-build-debug/`.
 
-### Start MMKP
+### 6.1. Start MMKP
 
 `start-mmkp` is a script that runs the algorithm for a single instance and saves the results in a file named `<instance_name>.txt.out`. The script creates also a file named `<instance_name>.txt.time` with the time spent to compute the solution.
 
@@ -107,7 +154,7 @@ The greedy algorithm starts with an empty knapsack and iteratively selects items
 
 With the `-v` option the script prints the program output to the standard output, by default the output is redirected to avoid cluttering the terminal. 
 
-### Start verifier
+### 6.2. Start verifier
 
 `start-verifier` is a script that verifies the solution of a single instance. The script verifies that the solution is feasible and that has not exceeded the time limit (by default is 60s).
 
@@ -115,7 +162,7 @@ With the `-v` option the script prints the program output to the standard output
 ./start-verifier.sh <instance>
 ```
 
-### Runner
+### 6.3. Runner
 
 `runner` is a script that runs the algorithm for all the instances (standard and large) and check the results against the optimal solutions. The script verifies that the solution is feasible and that has not exceeded the time limit (by default is 60s).
 
@@ -130,7 +177,7 @@ In the other hand, with the `--skip-compute` option the script does not run the 
 
 If you combine the `--skip-compute` and `--only-standard` options, the script verifies the results for the standard instances only. 
 
-## Authors
+## 7. Authors
 
 - Luca Di Bello <luca.dibello@student.supsi.ch>
 - Mattia Dell'Oca <mattia.delloca@student.supsi.ch>
