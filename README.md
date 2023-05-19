@@ -65,7 +65,7 @@ Where:
 
 ## Scripts
 
-Notice: Be careful, you have to build `mmkp` and `verifier` before running the scripts and the resultants executables must be in the default directory `./cmake-build-debug/`.
+> Notice: Be careful, you have to build `mmkp` and `verifier` before running the scripts and the compiled executables must be in the default directory `./cmake-build-debug/`.
 
 ### Start MMKP
 
