@@ -152,8 +152,8 @@ $$
 \begin{align*}
     P & = e^{\frac{z_{new} - z_{opt}}{C}} \\
     \textit{where} \\
-    z_{new} & = \text{new neighbor solution value} \\
-    z_{opt} & = \text{current optimal solution value}
+    z_{new} & = \textit{new neighbor solution value} \\
+    z_{opt} & = \textit{current optimal solution value}
 \end{align*}
 $$
 
