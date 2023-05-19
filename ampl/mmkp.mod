@@ -18,7 +18,6 @@ var x{C,N} binary;   # Whether each item in each class is selected
 # Objective
 maximize z: sum{c in C, n in N} v[c,n]*x[c,n];
 
-
 # Constraints
 s.t. capacity_constraint{r in R}:
   sum{c in C, n in N} w[c,n,r]*x[c,n] <= q[r];

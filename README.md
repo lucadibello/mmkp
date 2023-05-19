@@ -23,7 +23,8 @@
   - [7.1. Start MMKP](#71-start-mmkp)
   - [7.2. Start verifier](#72-start-verifier)
   - [7.3. Runner](#73-runner)
-- [8. Authors](#8-authors)
+- [8. Useful links](#8-useful-links)
+- [9. Authors](#9-authors)
 
 ## 1. Problem description
 
@@ -90,7 +91,7 @@ Where:
 
 We have developed an AMPL solver using [CPLEX](https://www.ibm.com/products/ilog-cplex-optimization-studio/cplex-optimizer) to provide an exact solution for the MMKP (Multiple-Choice Multidimensional Knapsack Problem). By formulating the problem as a mathematical model and utilizing the power of CPLEX, we can obtain the optimal solution. However, it is important to note that since the problem is NP-hard, computing the solution may take a considerable amount of time.
 
-For convenience, we have made the AMPL mathematical model available in the ./src/ampl directory, consisting of the mmkp.mod and mmkp.run files. These files contain the formulation of the problem and the instructions for running the solver. Additionally, to facilitate the process and eliminate the need to install AMPL, we have provided a Jupyter Notebook that allows you to execute the model and visualize the results directly.
+For convenience, we have made the AMPL mathematical model available in the `./src/ampl` directory, consisting of the `mmkp.mod` and `mmkp.run` files (there is also a sample instance `exaple-ampl-mmkp-instance.dat`). These files contain the formulation of the problem and the instructions for running the solver. Additionally, to facilitate the process and eliminate the need to install AMPL, we have provided a Jupyter Notebook that allows you to execute the model and visualize the results directly.
 
 You can access the Jupyter Notebook by following this link: [MMKP.ipynb](./ampl/mmkp.ipynb)
 
@@ -274,17 +275,16 @@ In the other hand, with the `--skip-compute` option the script does not run the 
 
 If you combine the `--skip-compute` and `--only-standard` options, the script verifies the results for the standard instances only.
 
-## Useful links
+## 8. Useful links
 
 - [AMPL](https://ampl.com/)
 - [CPLEX](https://www.ibm.com/products/ilog-cplex-optimization-studio/cplex-optimizer)
 - [Jupyter Notebook](https://jupyter.org/)
-- [LaTeX](https://www.latex-project.org/)
-- [CMake](https://cmake.org/)
-- [C++](https://isocpp.org/)
--  [MMKP](https://en.wikipedia.org/wiki/Multiple-choice_knapsack_problem)
+- [Greedy algorithms (Wikipedia)](https://en.wikipedia.org/wiki/Greedy_algorithm)
+- [Local Search algorithm (Wikipedia)](https://en.wikipedia.org/wiki/Local_search_(optimization))
+- [Simulated Annealing algorithm (Wikipedia)](https://en.wikipedia.org/wiki/Simulated_annealing)
 
-## 8. Authors
+## 9. Authors
 
 - Luca Di Bello <luca.dibello@student.supsi.ch>
 - Mattia Dell'Oca <mattia.delloca@student.supsi.ch>
