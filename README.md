@@ -175,7 +175,7 @@ It is worth noting that the effectiveness of the simulated annealing algorithm d
 
 ## 4. Performance comparison
 
-The testing instances were run using the three algorithms (Greedy, Local Search, and Simulated Annealing) with three different time limits (1s, 10s, and 60s). The results are summarized in the following tables.
+To assess the performance of the algorithms (Greedy, Local Search, and Simulated Annealing) on the testing instances, we conducted experiments using different time limits. We evaluated the algorithms on a subset of the standard and large instance sets, specifically 10 instances from each set. The results of these experiments are summarized in the following tables:
 
 > The following analysis is based on the results obtained by running the algorithms on a MacBook Mini M1 with 16GB of RAM and 8 CPU cores.
 
