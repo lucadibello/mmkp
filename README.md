@@ -104,6 +104,8 @@ $$
 \end{align*}
 $$
 
+> Notice: somehow GitHub does not render the formula correctly, please refer to the [PDF](./docs/MMKP_Greedy.pdf) for the correct formula.
+
 This sorting enables prioritizing the classes that have a higher average weight relative to the remaining capacity.
 
 - **Item sorting**: Once the classes are sorted, the algorithm proceeds to sort the items within each class. The sorting is based on the value, weight, and the remaining knapsack capacity. The item ratio formula used is:
